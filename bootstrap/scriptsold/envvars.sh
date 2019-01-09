@@ -13,6 +13,17 @@
 # - BOOTSTRAP_CACHE
 # - BOOTSTRAP_REPOSITORY
 #
+if [ -z "${BUILD_NUMBER}" ]
+then
+    echo "BUILD_NUMBER not specified, exiting"
+    exit 1
+fi
+
+if [ -z "${BOOTSTRAP_ARCH}" ]
+then
+    echo "BOOTSTRAP_ARCH not specified, exiting"
+    exit 1
+fi
 
 if [ -z "${BOOTSTRAP_REPOSITORY}" ]
 then
@@ -36,13 +47,4 @@ VM="${BOOTSTRAP_CACHE}/vmtarget/pharo --headless"
 IMAGE_FLAGS="--no-default-preferences"
 
 # Include pharo version 
-#. $(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)/envversion.sh
-MANUAL=0
-while [ "$1" != "" ]; do
-    case $1 in
-        -m | --manual )          
-	        MANUAL=1
-	        ;;
-    esac
-    shift
-done
+. $(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)/envversion.sh
