@@ -1,3 +1,6 @@
+Descripcion problema Damien:
+https://github.com/pharo-project/pharo/pull/2377
+
 # Pharo
 
 This repository contains sources of the [Pharo language](http://pharo.org/). Pharo is a pure object-oriented programming language and a powerful environment, focused on simplicity and immediate feedback (think IDE and OS rolled into one).
