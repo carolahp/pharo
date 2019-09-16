@@ -38,21 +38,6 @@ SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)"
 #
 # Prepare the bootstrap environment
 #
-. ${SCRIPTS}/3a-prepare.sh
+. ${SCRIPTS}/3-prepare.sh
 #
 
-if [ $MANUAL = 1 ]; then
-	#
-	# Open image for continue the process manually using the pharo ui
-	#
-	. ${SCRIPTS}/3b-bootstrapManual.sh 
-else
-	#
-	# Perform bootstrap in headless mode
-	#
-	. ${SCRIPTS}/3b-bootstrapAutomatic.sh 
-	#
-	# Build the new image
-	#
-	#${SCRIPTS}/4-build.sh
-fi
