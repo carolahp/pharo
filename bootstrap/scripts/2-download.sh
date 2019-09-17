@@ -13,6 +13,6 @@ ${SCRIPTS}/getPharoVM.sh 70
 wget https://github.com/carolahp/PharoBootstrap/releases/download/v2.0/bootstrapImage.zip
 unzip -o bootstrapImage.zip
 wget https://github.com/carolahp/PharoCandleSrc/archive/v1.0.zip
-unzip -o v1.0
+unzip -o v1.0 
 
 cd -
