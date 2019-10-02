@@ -28,7 +28,7 @@ To re-open the bootstrapper windows you must execute:
 
 # Hybrid Debugger
 
-The Hybrid Debugger is for debugging duri semantic errors in your language definition.
+The Hybrid Debugger is for debugging semantic errors in your language definition.
 
 First we need Spec2:
 ```Smalltalk
