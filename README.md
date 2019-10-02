@@ -4,9 +4,8 @@ The Pharo Bootstrapper is a Pharo image who is able to generate other images fro
 
 First clone this repository and checkout the branch candle 
 ```bash
-git clone https://github.com/carolahp/pharo.git
+git clone -b candle https://github.com/carolahp/pharo.git
 cd pharo
-git checkout origin/candle
 ```
 
 Generate the Pharo Bootstrapper image by executing: 
