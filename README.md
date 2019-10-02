@@ -15,18 +15,20 @@ Generate the Pharo Bootstrapper image by executing:
 BUILD_NUMBER=42 BOOTSTRAP_ARCH=32 bash ./bootstrap/scripts/bootstrap.sh -m
 ```
 
-The Pharo Bootstrapper image is open and ready to use.
+The Pharo Bootstrapper image is open showing two bootstrapper windows.
 
 
-To open the bootstrapper windows you must execute:
+To re-open the bootstrapper windows you must execute:
 ```Smalltalk
+"For bootstrapping a micro image (164KB)"
 (PBBuilder newWithUICandleInDirectory: './PharoCandleSrc-1.0' asFileReference ) openUI.
+"For bootstrapping the pharo miniamal image (1.7MB)"
 (PBBuilder newWithUIInDirectory: './../../../src' asFileReference ) openUI.
 ```
 
 # Hybrid Debugger
 
-The Hybrid Debugger is for debugging semantic errors in your language definition.
+The Hybrid Debugger is for debugging duri semantic errors in your language definition.
 
 First we need Spec2:
 ```Smalltalk
