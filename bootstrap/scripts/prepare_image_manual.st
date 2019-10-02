@@ -17,3 +17,5 @@
 ] on: Warning do: #resume.
 
 (PBBuilder newWithUICandleInDirectory: './PharoCandleSrc-1.0' asFileReference ) openUI.
+
+(PBBuilder newWithUIInDirectory: './../../../src' asFileReference ) openUI.
