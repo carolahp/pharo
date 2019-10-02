@@ -1,7 +1,7 @@
 [
   Metacello new
   baseline: 'PBManager';
-  repository: 'github://carolahp/PBManager:BootstrapPharoCandleWithEspell1';
+  repository: 'github://carolahp/PBManager:BootstrapPharoCandleWithEspell4';
   load.
 
   "Metacello new
