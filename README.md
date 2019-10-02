@@ -1,4 +1,4 @@
-# Pharo Bootstrapper
+# Generating small Images using the Pharo Bootstrapper
 The Pharo Bootstrapper is a Pharo image who is able to generate other images from its sources. To play with it, follow the next steps:
 
 
