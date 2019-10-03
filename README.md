@@ -38,9 +38,9 @@ In your custom image you define any class of the system, even core classes such 
 
 # Debugging your image before deploying it
 
-The Hybrid Debugger is for debugging semantic errors in your language definition.
+To be able to use the functionality "debug in generated image" you must install the Hybrid Debugger, which let you debugg semantic errors in your language definition before writing the image to disk and executing it with the Pharo VM.
 
-First we need Spec2:
+First you must install Spec2:
 ```Smalltalk
     Metacello new
         githubUser: 'pharo-spec' project: 'Spec' commitish: 'master' path: 'src';
@@ -51,7 +51,7 @@ First we need Spec2:
         load
 ```
 
-After we install the HybridDebugger
+After, install the HybridDebugger
 ```Smalltalk
     Metacello new
         githubUser: 'carolahp' project: 'PBHybridDebugger' commitish: 'master' path: '';
