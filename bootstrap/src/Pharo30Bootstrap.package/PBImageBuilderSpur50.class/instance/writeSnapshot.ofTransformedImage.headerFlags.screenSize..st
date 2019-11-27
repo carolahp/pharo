@@ -13,6 +13,7 @@ writeSnapshot: imageFileName ofTransformedImage: spurHeap headerFlags: headerFla
 				ifFalse: [ex pass]]."
 	sim := spurHeap coInterpreter.
 	sim bootstrapping: true.
+	spurHeap segmentManager prepareForSnapshot.
 	spurHeap
 		setEndOfMemory: spurHeap endOfMemory + spurHeap bridgeSize. "hack; initializeInterpreter: cuts it back by bridgeSize"
 	sim initializeInterpreter: 0;
