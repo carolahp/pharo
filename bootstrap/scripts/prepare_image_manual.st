@@ -1,14 +1,12 @@
 [
   Metacello new
   baseline: 'PBManager';
-  repository: 'github://carolahp/PBManager:v1.1.0';
+  repository: 'github://carolahp/PBManager';
   load.
 
 ] on: Warning do: #resume.
 
-(PBBuilder newWithUICandleInDirectory: './PharoCandleSrc-1.0' asFileReference ) openUI.
-(PBBuilder newWithUIInDirectory: './../../../src' asFileReference ) openUI.
-GTPlayground new openOn: (GTPlayPage new saveContent: '
-(PBBuilder newWithUICandleInDirectory: ''./PharoCandleSrc-1.0'' asFileReference ) openUI.
+(PBBuilderUI withRepositoriesIn: (Smalltalk os environment at: 'LANGUAGE_REPOSITORIES' ifAbsent: ['.'])) open.
 
-(PBBuilder newWithUIInDirectory: ''./../../../src'' asFileReference ) openUI.')
+GTPlayground new openOn: (GTPlayPage new saveContent: 
+	'(PBBuilderUI withRepositoriesIn: (Smalltalk os environment at: ''LANGUAGE_REPOSITORIES'' ifAbsent: [''.''])) open')

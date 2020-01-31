@@ -46,3 +46,17 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
+
+# For storing the repositories with the language definitions
+if [ -z "${LANGUAGE_DEFINITIONS}" ]
+then
+  LANGUAGE_DEFINITIONS=${BOOTSTRAP_REPOSITORY}/bootstrap/language-definitions
+fi
+export LANGUAGE_DEFINITIONS
+
+# For storing the pharo bootstrapper image and VM
+if [ -z "${BOOTSTRAPPER}" ]
+then
+  BOOTSTRAPPER=${BOOTSTRAP_REPOSITORY}/bootstrap/bootstrapper
+fi
+export BOOTSTRAPPER

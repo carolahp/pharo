@@ -5,7 +5,7 @@
 set -x
 set -e
 
-cd "${SCRIPTS}/pharo" 
+cd "${BOOTSTRAPPER}" 
 
 ./pharo Pharo.image ${IMAGE_FLAGS} ${SCRIPTS}/prepare_image.st --save --quit
 if [ $MANUAL = 1 ]; then
