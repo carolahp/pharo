@@ -15,7 +15,7 @@ wget https://github.com/carolahp/PharoBootstrap/releases/download/v2.0.2/bootstr
 unzip -o bootstrapImage.zip
 
 cd ${LANGUAGE_DEFINITIONS}
-wget https://github.com/carolahp/PharoCandleSrc/archive/v1.0.zip
-unzip -o v1.0 
+wget https://github.com/carolahp/PharoCandleSrc/archive/v1.1.zip
+unzip -o v1.1
 
 cd 
