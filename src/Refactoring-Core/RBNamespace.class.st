@@ -297,7 +297,7 @@ RBNamespace >> description: aString [
 
 { #category : #accessing }
 RBNamespace >> environment [
-	^environment
+	^ environment ifNil: [ environment := RBBrowserEnvironment new].
 ]
 
 { #category : #accessing }
@@ -340,8 +340,7 @@ RBNamespace >> includesGlobal: aSymbol [
 { #category : #initialization }
 RBNamespace >> initialize [
 	super initialize.
-	environment ifNil: [ environment := RBBrowserEnvironment new].
-	changes := changeFactory compositeRefactoryChange onSystemDictionary: environment.
+	changes := changeFactory compositeRefactoryChange onSystemDictionary: self environment.
 	newClasses := IdentityDictionary new.
 	changedClasses := IdentityDictionary new.
 	removedClasses := Set new.
