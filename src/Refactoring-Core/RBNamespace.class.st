@@ -52,8 +52,9 @@ Class {
 
 { #category : #'instance creation' }
 RBNamespace class >> onEnvironment: aBrowserEnvironment [ 
-	^(self new)
+	^self basicNew
 		environment: aBrowserEnvironment;
+		initialize;
 		yourself
 ]
 
@@ -248,12 +249,8 @@ RBNamespace >> compile: aString in: aRBClass classified: aSymbol [
 RBNamespace >> createNewClassFor: aBehavior [ 
 	| nonMeta meta className |
 	className := aBehavior instanceSide name.
-	nonMeta := (modelFactory rbClass existingNamed: className)
-				model: self;
-				yourself.
-	meta := (modelFactory rbMetaclass existingNamed: className)
-				model: self;
-				yourself.
+	nonMeta := modelFactory rbClass existingNamed: className model: self.
+	meta := modelFactory rbMetaclass existingNamed: className model: self.
 	^changedClasses at: className put: (Array with: nonMeta with: meta)
 ]
 
@@ -343,8 +340,8 @@ RBNamespace >> includesGlobal: aSymbol [
 { #category : #initialization }
 RBNamespace >> initialize [
 	super initialize.
-	changes := changeFactory compositeRefactoryChange.
-	environment := RBBrowserEnvironment new.
+	environment ifNil: [ environment := RBBrowserEnvironment new].
+	changes := changeFactory compositeRefactoryChange onSystemDictionary: environment.
 	newClasses := IdentityDictionary new.
 	changedClasses := IdentityDictionary new.
 	removedClasses := Set new.

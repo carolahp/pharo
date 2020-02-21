@@ -128,7 +128,7 @@ SycRefactoringPreview >> generateChanges [
 	changes := command asRefactorings.
 	rbEnvironment := self activeRBEnvironment.
 	changes do: [ :each | 
-		each model environment: rbEnvironment.
+		each model: ( RBClassModelFactory rbNamespace onEnvironment: rbEnvironment ).
 		each primitiveExecute ]
 ]
 
@@ -260,6 +260,8 @@ SycRefactoringPreview >> updateTablePresenter [
 	changes do: [ :each | aCompositeChange addChange: each ].
 	table
 		items: (aCompositeChange whatToDisplayIn: self).
-	table items ifNotEmpty: [ table selectIndex: 1.
+	table items ifNotEmpty: [ 
+		aCompositeChange onSystemDictionary: (changes at:1) model environment. 
+		table selectIndex: 1.
 		existsChanges := true ]
 ]

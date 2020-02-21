@@ -66,6 +66,11 @@ ClySystemEnvironment >> asGlobalScopeIn: aNavigationEnvironment [
 	^ClySystemEnvironmentScope of: self in: aNavigationEnvironment named: name
 ]
 
+{ #category : #converting }
+ClySystemEnvironment >> asRBEnvironment [
+	^ RBBrowserEnvironment new
+]
+
 { #category : #'class management' }
 ClySystemEnvironment >> bindingOf: aSymbol [
 	^globals bindingOf: aSymbol
@@ -168,6 +173,11 @@ ClySystemEnvironment >> defaultClassCompiler [
 { #category : #'package management' }
 ClySystemEnvironment >> ensureExistAndRegisterPackageNamed: packageName [
 	^packageOrganizer ensureExistAndRegisterPackageNamed: packageName
+]
+
+{ #category : #accessing }
+ClySystemEnvironment >> environment [
+	^ RBBrowserEnvironment new
 ]
 
 { #category : #accessing }

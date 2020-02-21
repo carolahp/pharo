@@ -259,6 +259,11 @@ RGBehavior >> canMergeWith: anRGObject visited: visitedDefinitions [
 	^ true.
 ]
 
+{ #category : #accessing }
+RGBehavior >> categoryOfElement: aString ifAbsent: aBlockClosure [ 
+	^ aBlockClosure value
+]
+
 { #category : #'accessing - definition' }
 RGBehavior >> classVariablesBindings [
 
@@ -752,6 +757,37 @@ RGBehavior >> name: aString [
 		self announcer behaviorParentRenamed: assoc key from: oldName ].
 ]
 
+{ #category : #accessing }
+RGBehavior >> oldDefinition [
+	"Answer a String that defines the receiver."
+
+	| aStream |
+	aStream := (String new: 800) writeStream.
+	superclass 
+		ifNil: [aStream nextPutAll: 'ProtoObject']
+		ifNotNil: [aStream nextPutAll: superclass name].
+	aStream nextPutAll: self kindOfSubclass;
+			store: self name.
+	(self hasTraitComposition) ifTrue: [
+		aStream cr; tab; nextPutAll: 'uses: ';
+			nextPutAll: self traitCompositionString].
+	aStream cr; tab; nextPutAll: 'instanceVariableNames: ';
+			store: self instanceVariablesString.
+	aStream cr; tab; nextPutAll: 'classVariableNames: ';
+			store: self classVariablesString.
+	aStream cr; tab; nextPutAll: 'poolDictionaries: ';
+			store: self sharedPoolsString.
+	aStream cr; tab; nextPutAll: 'category: ';
+			store: self category asString.
+
+	superclass ifNil: [ 
+		aStream nextPutAll: '.'; cr.
+		aStream nextPutAll: self name.
+		aStream space; nextPutAll: 'superclass: nil'. ].
+
+	^ aStream contents
+]
+
 { #category : #printing }
 RGBehavior >> printOn: aStream [ 
 	aStream nextPutAll: self name
@@ -989,6 +1025,11 @@ RGBehavior >> pvtUntagFrom: aSymbol [
 	
 ]
 
+{ #category : #'adding/removing' }
+RGBehavior >> removeFromSystem [
+	self parent removeBehavior: self
+]
+
 { #category : #'accessing - backend' }
 RGBehavior >> removeLocalMethod: anRGMethod [ 
 
@@ -1055,6 +1096,11 @@ RGBehavior >> slotDefinitionString [
 RGBehavior >> slots [		
 		
 	^ self layout slots 
+]
+
+{ #category : #accessing }
+RGBehavior >> sourceCodeAt: aString [ 
+	^ (self localMethods select: [ :method | method name = aString ]) first sourceCode
 ]
 
 { #category : #'accessing class hierarchy' }
@@ -1209,4 +1255,9 @@ RGBehavior >> usedTraits [
 RGBehavior >> usesSpecialSlot [
 	"return true if we define something else than InstanceVariableSlots"
 	^self slots anySatisfy: [ :each | each isSpecial ]
+]
+
+{ #category : #accessing }
+RGBehavior >> withAllSubclasses [
+	^ self subclasses asOrderedCollection add: self; yourself
 ]
