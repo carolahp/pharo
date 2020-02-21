@@ -1105,12 +1105,11 @@ RGBehavior >> slots [
 ]
 
 { #category : #accessing }
-RGBehavior >> sourceCodeAt: aString [
-	| methods |
-	methods := self localMethods select: [ :method | method name = aString ].
-	^ methods 
-		ifNotEmpty: [ methods first sourceCode ] 	
-		ifEmpty: [ self error: 'Selector #', aString asString, ' not found in RGClass "', self name, '"' ]
+RGBehavior >> sourceCodeAt: aSymbol [
+	| method |
+	method :=  self localMethodNamed: aSymbol 
+						 ifAbsent: [ self error: 'Selector #', aSymbol asString, ' not found in RGClass "', self name, '"' ].
+	^ method first sourceCode 
 ]
 
 { #category : #'accessing class hierarchy' }
