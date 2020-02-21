@@ -260,8 +260,14 @@ RGBehavior >> canMergeWith: anRGObject visited: visitedDefinitions [
 ]
 
 { #category : #accessing }
-RGBehavior >> categoryOfElement: aString ifAbsent: aBlockClosure [ 
-	^ aBlockClosure value
+RGBehavior >> categoryOfElement: aSymbol ifAbsent: aBlockClosure [
+	
+	| aMethod |
+	
+	aMethod := (self localMethodNamed: aSymbol ifAbsent: nil).
+	^ aMethod 
+		ifNotNil: [ aMethod protocol ]
+		ifNil: aBlockClosure
 ]
 
 { #category : #'accessing - definition' }
