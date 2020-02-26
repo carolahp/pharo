@@ -5,7 +5,7 @@ Class {
 		'methodTimes',
 		'compilationTimes'
 	],
-	#category : 'Pharo30Bootstrap'
+	#category : #Pharo30Bootstrap
 }
 
 { #category : #adding }

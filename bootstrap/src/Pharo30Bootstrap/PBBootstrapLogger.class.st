@@ -5,7 +5,7 @@ Class {
 		'queue',
 		'logging'
 	],
-	#category : 'Pharo30Bootstrap'
+	#category : #Pharo30Bootstrap
 }
 
 { #category : #'logging-Deprecated' }

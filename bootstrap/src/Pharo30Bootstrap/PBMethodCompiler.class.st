@@ -5,7 +5,7 @@ Class {
 		'builder',
 		'packages'
 	],
-	#category : 'Pharo30Bootstrap'
+	#category : #Pharo30Bootstrap
 }
 
 { #category : #selection }

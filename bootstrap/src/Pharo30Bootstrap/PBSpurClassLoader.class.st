@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'nextClassIndex'
 	],
-	#category : 'Pharo30Bootstrap'
+	#category : #Pharo30Bootstrap
 }
 
 { #category : #'as yet unclassified' }

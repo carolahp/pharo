@@ -13,7 +13,7 @@ Class {
 		'definitionMirrorMap',
 		'mirrorDefinitionMap'
 	],
-	#category : 'Pharo30Bootstrap'
+	#category : #Pharo30Bootstrap
 }
 
 { #category : #accessing }

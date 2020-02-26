@@ -1,5 +1,5 @@
 Class {
 	#name : #PBStepStartedSignal,
 	#superclass : #PBSignal,
-	#category : 'Pharo30Bootstrap'
+	#category : #Pharo30Bootstrap
 }

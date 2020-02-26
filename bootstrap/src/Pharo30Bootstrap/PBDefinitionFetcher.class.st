@@ -4,7 +4,7 @@ Base class used to fetch Monticello definitions (classes, methods) that will be 
 Class {
 	#name : #PBDefinitionFetcher,
 	#superclass : #Object,
-	#category : 'Pharo30Bootstrap-Deprecated'
+	#category : #'Pharo30Bootstrap-Deprecated'
 }
 
 { #category : #versioning }

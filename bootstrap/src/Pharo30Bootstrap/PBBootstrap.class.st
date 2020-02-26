@@ -9,7 +9,7 @@ Class {
 		'ringEnvironment',
 		'versionInfo'
 	],
-	#category : 'Pharo30Bootstrap'
+	#category : #Pharo30Bootstrap
 }
 
 { #category : #'instance creation' }
@@ -42,9 +42,9 @@ PBBootstrap class >> fromCommandLine [
 		ifAbsent: [ -1 ].
 	versionInfo := options optionAt: 'VERSION_INFO' ifAbsent: [ self error: 'Must provide VERSION_INFO in the form of a git describe --long' ].
 	
-	('Architecture: ' , architecture) logCr.
-	('BuildNumber: ' , buildNumber) logCr.
-	('VersionInfo: ' , versionInfo) logCr. 
+	('Architecture: ' , architecture) traceCr.
+	('BuildNumber: ' , buildNumber) traceCr.
+	('VersionInfo: ' , versionInfo) traceCr. 
 	
 	versionInfo := (PBVersionInfo fromLongGitDescribe: versionInfo)
 		buildNumber: buildNumber;

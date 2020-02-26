@@ -8,7 +8,7 @@ Class {
 		'nextOrdinaryClassIndex',
 		'freeListsOop'
 	],
-	#category : 'Pharo30Bootstrap'
+	#category : #Pharo30Bootstrap
 }
 
 { #category : #examples }

@@ -4,7 +4,7 @@ A PBVersionInfoTest is a test class for testing the behavior of PBVersionInfo
 Class {
 	#name : #PBVersionInfoTest,
 	#superclass : #TestCase,
-	#category : 'Pharo30Bootstrap-Tests'
+	#category : #'Pharo30Bootstrap-Tests'
 }
 
 { #category : #'test-default-values' }

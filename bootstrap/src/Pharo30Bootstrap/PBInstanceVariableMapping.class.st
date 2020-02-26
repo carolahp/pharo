@@ -30,7 +30,7 @@ Class {
 		'dictionaryArrayIndex',
 		'listOfClassSlots'
 	],
-	#category : 'Pharo30Bootstrap'
+	#category : #Pharo30Bootstrap
 }
 
 { #category : #'instance-creation' }

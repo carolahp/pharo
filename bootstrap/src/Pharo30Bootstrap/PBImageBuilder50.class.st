@@ -19,7 +19,7 @@ Class {
 		'imageFileReference',
 		'versionInfo'
 	],
-	#category : 'Pharo30Bootstrap'
+	#category : #Pharo30Bootstrap
 }
 
 { #category : #visiting }

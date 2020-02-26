@@ -1,7 +1,7 @@
 Class {
 	#name : #PBOldExtendedBootstrap,
 	#superclass : #PBBootstrap,
-	#category : 'Pharo30Bootstrap'
+	#category : #Pharo30Bootstrap
 }
 
 { #category : #bootstrap }

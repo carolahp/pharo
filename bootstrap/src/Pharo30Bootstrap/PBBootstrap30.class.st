@@ -10,7 +10,7 @@ Class {
 		'bootstrapEnvironment',
 		'remoteMetaclassBindings'
 	],
-	#category : 'Pharo30Bootstrap'
+	#category : #Pharo30Bootstrap
 }
 
 { #category : #bootstrapping }
