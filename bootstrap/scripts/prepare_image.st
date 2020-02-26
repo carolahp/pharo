@@ -9,3 +9,4 @@
 	repository: 'tonel://', repositoryPathString;
 	load.
 ] on: Warning do: #resume.
+"LGitRepository >> clone:options:to:"
