@@ -21,6 +21,8 @@ BaselineOfPharoBootstrapProcess >> baseline: spec [
 			repository: 'github://pharo-vcs/tonel:v1.0.15' ].
 		spec baseline: 'Hermes' with: [ spec
 			repository: 'github://tesonep/hermes:v2.5.1';
-  			loads: 'core' ].		
+  			loads: 'core' ].
+		spec
+			 package: 'Pharo30Bootstrap'.	
 ]
 ]
