@@ -27,6 +27,7 @@ set -e
 SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)"
 
 . ${SCRIPTS}/envvars.sh
+. ${SCRIPTS}/readarg.sh
 
 #
 # Remove any artifacts from previous runs
@@ -43,5 +44,5 @@ ${SCRIPTS}/3-prepare.sh
 #
 # Build the new image
 #
-${SCRIPTS}/4-build.sh
+#${SCRIPTS}/4-build.sh
 

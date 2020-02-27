@@ -11,5 +11,16 @@ SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)"
 
 set_version_variables
 
-./pharo Pharo.image ${IMAGE_FLAGS} ${BOOTSTRAP_REPOSITORY}/bootstrap/scripts/prepare_image.st --save --quit
-./pharo Pharo.image ${IMAGE_FLAGS} ${BOOTSTRAP_REPOSITORY}/bootstrap/scripts/bootstrap.st --ARCH=${BOOTSTRAP_ARCH} --BUILD_NUMBER=${BUILD_NUMBER} --VERSION_INFO="${PHARO_NAME_PREFIX}-${PHARO_COMMIT_HASH}" --quit
+cd "${BOOTSTRAPPER}" 
+
+./pharo Pharo.image ${IMAGE_FLAGS} ${SCRIPTS}/prepare_image.st --save --quit
+if [ $MANUAL = 1 ]; then
+	./pharo Pharo.image ${IMAGE_FLAGS} ${SCRIPTS}/prepare_image_manual.st --save --quit
+	# Open image for continue the process manually using the pharo ui
+	. ${SCRIPTS}/prepare_manual.sh 
+else
+	# Perform bootstrap in headless mode
+	. ${SCRIPTS}/prepare_automatic.sh 
+fi
+
+cd -

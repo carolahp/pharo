@@ -9,8 +9,7 @@ SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)"
 
 . ${SCRIPTS}/envvars.sh
 
-rm -f bootstrapImage.zip
-rm -f Pharo.image Pharo.changes pharo pharo-ui
-rm -rf pharo-vm
-rm -rf pharo-local
+rm -rf "${BOOTSTRAPPER}"
 rm -rf "${BOOTSTRAP_CACHE}"
+rm -rf "${LANGUAGE_DEFINITIONS}"
+rm -rf "${BOOTSTRAPPED_IMAGES}"

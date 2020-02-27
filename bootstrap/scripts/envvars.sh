@@ -13,6 +13,7 @@
 # - BOOTSTRAP_CACHE		# Working directory during building
 # - BOOTSTRAP_REPOSITORY	# Location of the pharo git clone
 # - BOOTSTRAP_VMTARGET		# Location of the target VM
+# - BOOTSTRAPPED_IMAGES   #Location of generated images
 #				  This can be set when a custom VM is to be 
 #				  used during bootstrap.
 #

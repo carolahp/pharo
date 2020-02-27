@@ -12,10 +12,17 @@ SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)"
 . ${SCRIPTS}/envvars.sh
 
 mkdir -p "${BOOTSTRAP_CACHE}" #required to generate hermes files
+mkdir -p "${BOOTSTRAPPER}" #for storing the bootstrap image files 
+mkdir -p "${LANGUAGE_DEFINITIONS}" #for storing the language definitions used to define the bootstrapped images
+cd "${BOOTSTRAPPER}"
 
-${BOOTSTRAP_REPOSITORY}/bootstrap/scripts/getPharoVM.sh 70
-wget --progress=dot:mega https://github.com/carolahp/PharoBootstrap/releases/download/v1.7.0/bootstrapImage.zip
-unzip bootstrapImage.zip
+${SCRIPTS}/getPharoVM.sh 80 vm 64
+wget https://github.com/carolahp/PharoBootstrap/releases/download/v2.0.3/boostrapper.zip
+unzip -o bootstrapper.zip
+
+cd "${LANGUAGE_DEFINITIONS}"
+wget https://github.com/carolahp/PharoCandleSrc/archive/v1.1.zip
+unzip -o v1.1
 
 cd "${BOOTSTRAP_CACHE}"
 #We need the old sources file next to the image because of sources condensation step
@@ -38,3 +45,6 @@ then
 fi
 echo "Target VM: $(${VM} --version | grep Hash)"
 
+cd "${BOOTSTRAPPED_IMAGES}"
+# The VM used to run our generated images
+${SCRIPTS}/getPharoVM.sh 80 vm 32
