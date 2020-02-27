@@ -14,10 +14,11 @@ SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)"
 mkdir -p "${BOOTSTRAP_CACHE}" #required to generate hermes files
 mkdir -p "${BOOTSTRAPPER}" #for storing the bootstrap image files 
 mkdir -p "${LANGUAGE_DEFINITIONS}" #for storing the language definitions used to define the bootstrapped images
+mkdir -p "${BOOTSTRAPPED_IMAGES}"
 cd "${BOOTSTRAPPER}"
 
 ${SCRIPTS}/getPharoVM.sh 80 vm 64
-wget https://github.com/carolahp/PharoBootstrap/releases/download/v2.0.3/boostrapper.zip
+wget https://github.com/carolahp/PharoBootstrap/releases/download/v2.0.3/bootstrapper.zip
 unzip -o bootstrapper.zip
 
 cd "${LANGUAGE_DEFINITIONS}"

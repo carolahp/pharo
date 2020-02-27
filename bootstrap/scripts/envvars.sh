@@ -72,8 +72,8 @@ fi
 export BOOTSTRAPPER
 
 # For storing the bootstrapped images
-if [ -z "${BOOTSTRAPPER_IMAGES}" ]
+if [ -z "${BOOTSTRAPPED_IMAGES}" ]
 then
-  BOOTSTRAPPER=${if [ -z "${BOOTSTRAPPER_IMAGES}/bootstrap/bootstrapped-images
+  BOOTSTRAPPED_IMAGES=${BOOTSTRAP_REPOSITORY}/bootstrap/bootstrapped-images
 fi
 export BOOTSTRAPPER_IMAGES
