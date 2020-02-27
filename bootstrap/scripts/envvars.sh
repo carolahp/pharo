@@ -57,3 +57,23 @@ IMAGE_FLAGS="--no-default-preferences"
 # Include pharo version 
 . $(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)/envversion.sh
 
+# For storing the repositories with the language definitions
+if [ -z "${LANGUAGE_DEFINITIONS}" ]
+then
+  LANGUAGE_DEFINITIONS=${BOOTSTRAP_REPOSITORY}/bootstrap/language-definitions
+fi
+export LANGUAGE_DEFINITIONS
+
+# For storing the pharo bootstrapper image and VM
+if [ -z "${BOOTSTRAPPER}" ]
+then
+  BOOTSTRAPPER=${BOOTSTRAP_REPOSITORY}/bootstrap/bootstrapper
+fi
+export BOOTSTRAPPER
+
+# For storing the bootstrapped images
+if [ -z "${BOOTSTRAPPER_IMAGES}" ]
+then
+  BOOTSTRAPPER=${if [ -z "${BOOTSTRAPPER_IMAGES}/bootstrap/bootstrapped-images
+fi
+export BOOTSTRAPPER_IMAGES
