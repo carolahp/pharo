@@ -76,4 +76,4 @@ if [ -z "${BOOTSTRAPPED_IMAGES}" ]
 then
   BOOTSTRAPPED_IMAGES=${BOOTSTRAP_REPOSITORY}/bootstrap/bootstrapped-images
 fi
-export BOOTSTRAPPER_IMAGES
+export BOOTSTRAPPED_IMAGES
