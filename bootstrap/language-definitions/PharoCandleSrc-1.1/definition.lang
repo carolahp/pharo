@@ -1,0 +1,5 @@
+PBRepository { 
+	#languageName : #'Candle',
+	#tonelPath: #'.',
+	#languageDefinitionClass: #PBLanguageDefinitionPharoCandle
+}
