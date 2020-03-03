@@ -22,8 +22,14 @@ wget https://github.com/carolahp/PharoBootstrap/releases/download/v2.0.3/bootstr
 unzip -o bootstrapper.zip
 
 cd "${LANGUAGE_DEFINITIONS}"
-wget https://github.com/carolahp/PharoCandleSrc/archive/v1.2.zip
-unzip -o v1.2
+CANDLE=v1.2
+FILE=./"$CANDLE".zip
+if ! test -f "$FILE"; then
+    #File does not exist
+    wget https://github.com/carolahp/PharoCandleSrc/archive/"$CANDLE".zip
+fi
+unzip -o "$CANDLE"
+exit 1
 
 cd "${BOOTSTRAP_CACHE}"
 #We need the old sources file next to the image because of sources condensation step
