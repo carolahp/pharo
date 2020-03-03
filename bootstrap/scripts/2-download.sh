@@ -22,7 +22,7 @@ wget https://github.com/carolahp/PharoBootstrap/releases/download/v2.0.3/bootstr
 unzip -o bootstrapper.zip
 
 cd "${LANGUAGE_DEFINITIONS}"
-wget https://github.com/carolahp/PharoCandleSrc/archive/v1.1.zip
+wget https://github.com/carolahp/PharoCandleSrc/archive/v1.2.zip
 unzip -o v1.1
 
 cd "${BOOTSTRAP_CACHE}"
