@@ -23,7 +23,7 @@ unzip -o bootstrapper.zip
 
 cd "${LANGUAGE_DEFINITIONS}"
 wget https://github.com/carolahp/PharoCandleSrc/archive/v1.2.zip
-unzip -o v1.1
+unzip -o v1.2
 
 cd "${BOOTSTRAP_CACHE}"
 #We need the old sources file next to the image because of sources condensation step
