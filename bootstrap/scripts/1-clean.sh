@@ -11,5 +11,4 @@ SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)"
 
 rm -rf "${BOOTSTRAPPER}"
 rm -rf "${BOOTSTRAP_CACHE}"
-rm -rf "${LANGUAGE_DEFINITIONS}"
 rm -rf "${BOOTSTRAPPED_IMAGES}"
