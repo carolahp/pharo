@@ -29,7 +29,6 @@ if ! test -f "$FILE"; then
     wget https://github.com/carolahp/PharoCandleSrc/archive/"$CANDLE".zip
 fi
 unzip -o "$CANDLE"
-exit 1
 
 cd "${BOOTSTRAP_CACHE}"
 #We need the old sources file next to the image because of sources condensation step
