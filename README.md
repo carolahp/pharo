@@ -1,60 +1,50 @@
-# Pharo
+# Why Generating Small Pharo Kernels?
+A full Pharo image is too big for running in small hardware constrained devices (i.e. arduino), and in many cases we don't need all the capabilities of the system when the goal is to use it only for executing a specific application after deploying.
 
-This repository contains sources of the [Pharo language](http://pharo.org/). Pharo is a pure object-oriented programming language and a powerful environment, focused on simplicity and immediate feedback (think IDE and OS rolled into one).
+In this project we present the Pharo Bootstrapper application, which allows you to design and generate your own custom Pharo images (also named Kernels). 
 
-![Pharo 6 screenshot](https://pbs.twimg.com/media/DBpdIGrXkAA8SJ1.jpg)
+# How does the Pharo Bootstrapper works?
+The Pharo Bootstrapper is an application that runs in Pharo. It works by reading the source files (in Tonel format) where all the classes of your custom system are defined, and after by generating a .image file which can be executed using the headless Pharo Virtual Machine. 
 
-## Download Pharo
+This application was developed using the previous work of [@Guillep](https://github.com/guillep) on the [Pharo Bootstrap Process](https://github.com/guillep/PharoBootstrap).
 
-To download the Pharo stable version for your platform, please visit:
-
-- [http://pharo.org/download](http://pharo.org/download)
-
-## Virtual machine
-
-This repository contains only sources of the Pharo image. The virtual machine source code is managed in a separate repository:
-
-- [https://github.com/pharo-project/opensmalltalk-vm](https://github.com/pharo-project/opensmalltalk-vm)
-
-## Automated Builds
-
-This repository is being built on a [Jenkins server](https://ci.inria.fr/pharo-ci-jenkins2) and uploaded to [files.pharo.org](https://files.pharo.org).
-
-- [Latest build - 64bit](http://files.pharo.org/image/80/latest-64.zip)
-- [Latest build - 32bit](http://files.pharo.org/image/80/latest.zip) 
-
-The minimal image contains the basic Pharo packages without the graphical user interface. It is useful as a base for server-side applications deployment.
-
-- [Minimal image latest build - 64bit](http://files.pharo.org/image/80/latest-minimal-64.zip)
-- [Minimal image latest build - 32bit](http://files.pharo.org/image/80/latest-minimal-32.zip) 
-
-
-## Bootstrapping Pharo from sources
-
-To bootstrap a new Pharo image you need the latest stable version of Pharo. For more information about bootstrapping, refer to [guillep/PharoBootstrap](https://github.com/guillep/PharoBootstrap).
-
-The bootstrapping can be done on a properly-named branch using the following script:
-
-```
-BUILD_NUMBER=42 BOOTSTRAP_ARCH=32 bash ./bootstrap/scripts/bootstrap.sh
+# How to start generating small images using the Pharo Bootstrapper?
+To play start playing with it, you need to clone this repository and checkout the branch candle 
+```bash
+git clone --branch candle https://github.com/carolahp/pharo.git
+cd pharo
 ```
 
-This will generate and archive images at various stages of the bootstrap process up to the full image in Pharo8.0-32bit-hhhhhhh.zip where hhhhhhh is the hash of the current checkout.
+To generate the environment for the Pharo Bootstrapper, execute the next command: 
+(don't forget the -m flag, for manual, or it will explode! ... at least for now)
+```bash
+BUILD_NUMBER=42 BOOTSTRAP_ARCH=32 bash ./bootstrap/scripts/bootstrap.sh -m
+```
 
-Additional information on the stages of the bootstrap and how to snapshot during the process are provided as comments in bootstrap.sh.
+A Pharo system will automatically start, showing up two Pharo Bootstrapper windows.
+![alt text](https://github.com/carolahp/pharo/blob/candle/pictures/bootstrapper-init.png "Two Pharo Bootstrapper windows")
 
-__Tip:__ You can set `BOOTSTRAP_REPOSITORY` and `BOOTSTRAP_CACHE` environment variables to do the bootstrap outside of the source repository.
+To open a Pharo Bootstrapper again you must execute:
+```Smalltalk
+"For bootstrapping a micro image (164KB)"
+(PBBuilder newWithUICandleInDirectory: './PharoCandleSrc-1.0' asFileReference ) openUI.
 
-__Note:__ If you are on a branch that doesn't follow the expected naming convention ('`PharoX.Y`'), then the script will pick an appropriate default (such as `Pharo7.0`). To build Pharo8.0 from a custom branch, you need to set `BRANCH_NAME=Pharo8.0` before the bootstrap script is run. 
+"For bootstrapping the pharo miniamal image (1.7MB)"
+(PBBuilder newWithUIInDirectory: './../../../src' asFileReference ) openUI.
+```
 
-
-## File format
-
-This source code repository is exported in [Tonel format](https://github.com/pharo-vcs/tonel). In this format, packages are represented as directories and each class is inside a single file.
-
-## How to contribute
-
-Pharo is an opensource project very friendly to contributions of the users. See the document [CONTRIBUTING](CONTRIBUTING.md) how you can help to improve Pharo.
-
+In your custom image you define any class of the system, even core classes such as Object, Class and Metaclass, the only limitation is the compatibility with the Pharo Virtual Machine.
 
 
+# Debugging your image before deploying it
+
+To be able to use the functionality "debug in generated image" you must install the Hybrid Debugger, which let you debugg semantic errors in your language definition before writing the image to disk and executing it with the Pharo VM.
+
+
+After, install the HybridDebugger
+```Smalltalk
+Metacello new
+githubUser: 'carolahp' project: 'PBHybridDebugger' commitish: 'master' path: '';
+baseline: 'PBHybridDebugger';
+load
+```
