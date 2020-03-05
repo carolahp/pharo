@@ -21,16 +21,12 @@ To generate the environment for the Pharo Bootstrapper, execute the next command
 BUILD_NUMBER=42 BOOTSTRAP_ARCH=32 bash ./bootstrap/scripts/bootstrap.sh -m
 ```
 
-A Pharo system will automatically start, showing up two Pharo Bootstrapper windows.
+A Pharo system will automatically start, showing the Pharo Bootstrapper window.
 ![alt text](https://github.com/carolahp/pharo/blob/candle/pictures/bootstrapper-init.png "Two Pharo Bootstrapper windows")
 
 To open a Pharo Bootstrapper again you must execute:
 ```Smalltalk
-"For bootstrapping a micro image (164KB)"
-(PBBuilder newWithUICandleInDirectory: './PharoCandleSrc-1.0' asFileReference ) openUI.
-
-"For bootstrapping the pharo miniamal image (1.7MB)"
-(PBBuilder newWithUIInDirectory: './../../../src' asFileReference ) openUI.
+PBBuilder new open
 ```
 
 In your custom image you define any class of the system, even core classes such as Object, Class and Metaclass, the only limitation is the compatibility with the Pharo Virtual Machine.
