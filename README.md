@@ -11,7 +11,7 @@ This application was developed using the previous work of [@Guillep](https://git
 # How to start generating small images using the Pharo Bootstrapper?
 To play start playing with it, you need to clone this repository and checkout the branch candle 
 ```bash
-git clone --branch candle https://github.com/carolahp/pharo.git
+git clone --branch bootstrapInPharo8 https://github.com/carolahp/pharo.git
 cd pharo
 ```
 
