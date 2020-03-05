@@ -22,7 +22,7 @@ BUILD_NUMBER=42 BOOTSTRAP_ARCH=32 bash ./bootstrap/scripts/bootstrap.sh -m
 ```
 
 A Pharo system will automatically start, showing the Pharo Bootstrapper window.
-![alt text](https://github.com/carolahp/pharo/blob/bootstrapInPharo8/pictures/bootstrapper.png "Pharo Bootstrapper UI")
+![alt text](https://github.com/carolahp/pharo/blob/bootstrapInPharo8/images/bootstrapper.png "Pharo Bootstrapper UI")
 
 To open a Pharo Bootstrapper again you must execute:
 ```Smalltalk
