@@ -22,7 +22,7 @@ wget https://github.com/carolahp/PharoBootstrap/releases/download/v2.0.3/bootstr
 unzip -o bootstrapper.zip
 
 cd "${LANGUAGE_DEFINITIONS}"
-CANDLE=v1.2
+CANDLE=v2.0
 FILE=./"$CANDLE".zip
 if ! test -f "$FILE"; then
     #File does not exist
