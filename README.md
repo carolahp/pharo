@@ -31,16 +31,3 @@ PBBuilder new open
 
 In your custom image you define any class of the system, even core classes such as Object, Class and Metaclass, the only limitation is the compatibility with the Pharo Virtual Machine.
 
-
-# Debugging your image before deploying it
-
-To be able to use the functionality "debug in generated image" you must install the Hybrid Debugger, which let you debugg semantic errors in your language definition before writing the image to disk and executing it with the Pharo VM.
-
-
-After, install the HybridDebugger
-```Smalltalk
-Metacello new
-githubUser: 'carolahp' project: 'PBHybridDebugger' commitish: 'master' path: '';
-baseline: 'PBHybridDebugger';
-load
-```
