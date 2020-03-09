@@ -1,5 +1,5 @@
 PBRepository { 
-	#languageName : #'Pharo',
+	#languageName : #'pharo-min',
 	#tonelPath: #'.',
 	#languageDefinitionClass: #PBLanguageDefinitionPharoManual
 }
