@@ -46,6 +46,7 @@ RBClassEnvironment >> acceptVisitor: aEnvVisitor [
 
 { #category : #adding }
 RBClassEnvironment >> addClass: aClass [ 
+
 	aClass isMeta
 		ifTrue: [ metaClasses add: aClass soleInstance name ]
 		ifFalse: [ classes add: aClass name ]
@@ -90,6 +91,11 @@ RBClassEnvironment >> classSelectorDictionary [
 			answer
 				at: class put: (self systemDictionary at: class) selectors;
 				yourself ]
+]
+
+{ #category : #'accessing-classes' }
+RBClassEnvironment >> classes [
+	^ classes
 ]
 
 { #category : #initialization }

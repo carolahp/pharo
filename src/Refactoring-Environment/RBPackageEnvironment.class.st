@@ -182,6 +182,11 @@ RBPackageEnvironment >> removePackage: aSymbol [
 	packages remove: aSymbol ifAbsent: []
 ]
 
+{ #category : #adding }
+RBPackageEnvironment >> removePackage: aSymbol [
+	packages remove: aSymbol ifAbsent: []
+]
+
 { #category : #printing }
 RBPackageEnvironment >> storeOn: aStream [ 
 	aStream nextPut: $(; nextPutAll: self class name; nextPutAll: ' onEnvironment: '.
