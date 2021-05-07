@@ -49,6 +49,11 @@ RBProtocolEnvironment >> basisObjects [
 ]
 
 { #category : #initialization }
+RBProtocolEnvironment >> addProtocol: aSymbol [ 
+	protocols add: aSymbol
+]
+
+{ #category : #initialization }
 RBProtocolEnvironment >> class: aClass protocols: aCollection [
 	class := aClass.
 	protocols := aCollection asOrderedCollection

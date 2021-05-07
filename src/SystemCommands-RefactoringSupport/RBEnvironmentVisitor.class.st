@@ -55,7 +55,6 @@ RBEnvironmentVisitor >> visitProtocolEnv: rbProtocolEnv [
 		{ list . selectedList . methodName }
 		onAccept: [:e| items addAll: e ].
 	dialog isCancelled ifTrue: [ ^self ].
-
 	rbProtocolEnv protocols do: [ :cls | rbProtocolEnv removeProtocol: cls ].
 	items do: [ :cls | rbProtocolEnv addProtocol: cls ].
 ]
