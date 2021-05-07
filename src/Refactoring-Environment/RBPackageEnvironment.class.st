@@ -166,23 +166,12 @@ RBPackageEnvironment >> postCopy [
 ]
 
 { #category : #printing }
-RBPackageEnvironment >> printBasisObject: aClass on: aStream [
-
-	^ aStream nextPutAll: aClass name
-]
-
-{ #category : #printing }
 RBPackageEnvironment >> printOn: aStream [
 	aStream nextPutAll: 'Pck: '.
 	packages do: [ :pkg | aStream nextPutAll: pkg packageName, ', ']
 ]
 
 { #category : #removing }
-RBPackageEnvironment >> removePackage: aSymbol [
-	packages remove: aSymbol ifAbsent: []
-]
-
-{ #category : #adding }
 RBPackageEnvironment >> removePackage: aSymbol [
 	packages remove: aSymbol ifAbsent: []
 ]
