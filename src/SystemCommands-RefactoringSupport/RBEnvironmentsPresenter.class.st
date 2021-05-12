@@ -7,8 +7,8 @@ Class {
 	#category : #'SystemCommands-RefactoringSupport-Scope'
 }
 
-{ #category : #layout }
-RBEnvironmentsPresenter class >> defaultLayout [
+{ #category : #specs }
+RBEnvironmentsPresenter class >> defaultSpec [
 	^ SpBoxLayout newTopToBottom
 		add:
 			(SpBoxLayout newLeftToRight
@@ -18,6 +18,7 @@ RBEnvironmentsPresenter class >> defaultLayout [
 ]
 
 { #category : #specs }
+
 RBEnvironmentsPresenter class >> menuCommandOn: aBuilder [
     <worldMenu>
     (aBuilder item: #'Scopes Editor')
@@ -33,13 +34,19 @@ RBEnvironmentsPresenter class >> open [
 	self new open
 ]
 
+{ #category : #example }
+RBEnvironmentsPresenter class >> example [
+	<script>
+	(self new) openWithSpec
+]
+
 { #category : #accessing }
-RBEnvironmentsPresenter class >> title [
+RBEnvironmentsPresenter class >> title [ 
 	^ 'Scope options'
 ]
 
 { #category : #accessing }
-RBEnvironmentsPresenter >> andWithScope: anItem [
+RBEnvironmentsPresenter >> andWithScope: anItem [ 
 	self performOperation: #& with: anItem
 ]
 
@@ -106,7 +113,6 @@ RBEnvironmentsPresenter >> initializeWidgets [
 
 { #category : #actions }
 RBEnvironmentsPresenter >> inspect: anItem [
-
 	(anItem inspectIn: self) open title: anItem shortDescription.
 ]
 
@@ -137,6 +143,18 @@ RBEnvironmentsPresenter >> performOperation: aSymbol with: anItem [
 	(self confirm: 'Do you want store this result in the list?') 
 		ifTrue: [
 			RefactoringSettings addScope: newScope.
+	"OLD 
+	| anEnvironment newScope |
+	[ anEnvironment := self selectAnotherScope.
+	newScope := anItem perform: aSymbol with: anEnvironment.
+	(self confirm: 'Do you want store this result in the list?') 
+		ifTrue: [ |key|
+			key := UIManager default
+				request: 'Enter a keyword name for new scope'
+				initialAnswer: anItem label , ' ', aSymbol , ' ', anEnvironment label.
+			key isEmptyOrNil ifTrue: [ Error signal ].
+			RefactoringSettings addScope: newScope withKey: key."
+
 			self updateList.
 		] ifFalse: [ newScope inspect ].
 	] 
@@ -146,22 +164,24 @@ RBEnvironmentsPresenter >> performOperation: aSymbol with: anItem [
 
 { #category : #actions }
 RBEnvironmentsPresenter >> remove: anItem [
-	RefactoringSettings removeScopeNamed: anItem description.
-	self updateList
+	RefactoringSettings removeScopeNamed: anItem label.
+	self updateList 
 ]
 
 { #category : #actions }
-RBEnvironmentsPresenter >> selectAnotherScopeWhitout: anItem [
-	| anotherScope list |
-	list := RefactoringSettings scopeList copyWithout: anItem.
+RBEnvironmentsPresenter >> selectAnotherScope [ 
+	| anotherScope |
 	anotherScope := UIManager default
-			chooseFrom: (list collect: #shortDescription)
-			values: list
+			chooseOrRequestFrom: RefactoringSettings scopeList
 			title: 'Select another scope (RBEnvironment)'.
-	^ anotherScope
+	^ anotherScope 
 ]
 
-{ #category : #actions }
-RBEnvironmentsPresenter >> updateList [
-	scopeList roots: RefactoringSettings scopeList
+{ #category : #accessing }
+RBEnvironmentsPresenter >> updateList [ 
+	"scopeList items: RefactoringSettings scopeList"
+	scopeList "addColumn: (SpStringTableColumn title: 'Environment' evaluated: #asString);"
+		roots: RefactoringSettings scopeList;
+		children: [ :aClass | RefactoringSettings scopeList select: [ :cls | aClass isCompositeEnvironment ifTrue: [ aClass environment == cls or: [ aClass otherEnvironment == cls ] ] ifFalse: [ false ] ] ];
+		yourself.
 ]

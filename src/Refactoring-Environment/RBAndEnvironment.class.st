@@ -73,12 +73,16 @@ RBAndEnvironment >> includesProtocol: aProtocol in: aClass [
 { #category : #testing }
 RBAndEnvironment >> includesSelector: aSelector in: aClass [ 
 	^(environment includesSelector: aSelector in: aClass) 
+<<<<<<< HEAD
 		and: [ self andedEnvironment includesSelector: aSelector in: aClass ]
 ]
 
 { #category : #printing }
 RBAndEnvironment >> operator [
 	^ ' & '
+=======
+		and: [self andedEnvironment includesSelector: aSelector in: aClass]
+>>>>>>> 6a3e8d6a8e (rename class and convert list to tree)
 ]
 
 { #category : #accessing }

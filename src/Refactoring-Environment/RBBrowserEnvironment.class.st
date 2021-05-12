@@ -484,7 +484,6 @@ RBBrowserEnvironment >> isClassEnvironment [
 
 { #category : #testing }
 RBBrowserEnvironment >> isCompositeEnvironment [
-
 	^ false
 ]
 

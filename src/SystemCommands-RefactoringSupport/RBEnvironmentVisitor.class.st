@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #accessing }
-RBEnvironmentVisitor >> chooserClass [
+RBEnvironmentVisitor >> chooserClass [ 
 	^ SpChooserPresenter
 ]
 
@@ -39,7 +39,7 @@ RBEnvironmentVisitor >> visitPackageEnv: rbPackageEnv [
 		{ list . selectedList . methodName }
 		onAccept: [:e| items addAll: e ].
 	dialog isCancelled ifTrue: [ ^self ].
-
+	
 	rbPackageEnv packages do: [ :cls | rbPackageEnv removePackage: cls ].
 	items do: [ :cls | rbPackageEnv addPackage: cls ].
 ]
