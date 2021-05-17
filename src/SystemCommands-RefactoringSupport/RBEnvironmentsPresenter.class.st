@@ -17,6 +17,16 @@ RBEnvironmentsPresenter class >> defaultSpec [
 		yourself
 ]
 
+{ #category : #'world menu' }
+RBEnvironmentsPresenter class >> menuCommandOn: aBuilder [
+    <worldMenu>
+    (aBuilder item: #'Scopes Editor')
+                action: [self open];
+                parent: #Refactoring;
+                help: 'Editor for custom refactoring environments (scopes)';
+                order: 10
+]
+
 { #category : #specs }
 
 RBEnvironmentsPresenter class >> menuCommandOn: aBuilder [

@@ -788,7 +788,7 @@ RBBrowserEnvironment >> selectorsForClass: aClass do: aBlock [
 			(self includesSelector: each in: aClass) ifTrue: [aBlock value: each]]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #description }
 RBBrowserEnvironment >> shortDescription [
 	
 	^ self description contractTo: 30
