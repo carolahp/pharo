@@ -34,7 +34,6 @@ RBBrowserEnvironmentWrapper >> acceptVisitor: aProgramNodeVisitor [
 
 { #category : #accessing }
 RBBrowserEnvironmentWrapper >> basisObjects [
-
 	^ #()
 ]
 

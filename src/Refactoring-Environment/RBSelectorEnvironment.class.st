@@ -13,9 +13,14 @@ Class {
 	#category : #'Refactoring-Environment'
 }
 
+<<<<<<< HEAD
 { #category : #'accessing - defaults' }
 RBSelectorEnvironment class >> defaultName [
 
+=======
+{ #category : #accessing }
+RBSelectorEnvironment class >> defaultName [
+>>>>>>> 81e0852155 (Add descriptions and new Class Hier environment)
 	^ 'Selectors'
 ]
 

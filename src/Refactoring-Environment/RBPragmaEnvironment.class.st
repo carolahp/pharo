@@ -19,7 +19,7 @@ RBPragmaEnvironment class >> defaultName [
 	^ 'Pragmas'
 ]
 
-{ #category : #api }
+{ #category : #'instance creation' }
 RBPragmaEnvironment class >> keywords: aKeywordCollection [
 	^ self
 		onEnvironment: self default

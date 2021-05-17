@@ -16,9 +16,9 @@ RBNotEnvironment >> definesClass: aClass [
 	^ (environment definesClass: aClass) not
 ]
 
-{ #category : #description }
-RBNotEnvironment >> description [
-	^ '(', environment shortDescription, ') not'
+{ #category : #accessing }
+RBNotEnvironment >> description [ 
+	^ '(', environment shortDescription, ') not' 
 ]
 
 { #category : #testing }

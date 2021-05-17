@@ -53,6 +53,11 @@ RBProtocolEnvironment >> addProtocol: aSymbol [
 	protocols add: aSymbol
 ]
 
+{ #category : #accessing }
+RBProtocolEnvironment >> basisObjects [
+	^ self protocols
+]
+
 { #category : #initialization }
 RBProtocolEnvironment >> class: aClass protocols: aCollection [
 	class := aClass.

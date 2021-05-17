@@ -2,7 +2,6 @@
 I am a RBBrowserEnvironment on a set of classes of a class hierarchy.
 
 Example:
-
 (RBBrowserEnvironment new) forClass:Morph protocols:{'printing'}.
 "
 Class {

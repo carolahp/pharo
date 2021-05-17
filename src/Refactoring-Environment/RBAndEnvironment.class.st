@@ -85,6 +85,11 @@ RBAndEnvironment >> operator [
 >>>>>>> 6a3e8d6a8e (rename class and convert list to tree)
 ]
 
+{ #category : #printing }
+RBAndEnvironment >> operator [
+	^ ' & '
+]
+
 { #category : #accessing }
 RBAndEnvironment >> packages [
 	^ environment packages & self andedEnvironment packages
