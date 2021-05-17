@@ -126,7 +126,22 @@ RBEnvironmentsPresenter >> initializeWidgets [
 
 { #category : #actions }
 RBEnvironmentsPresenter >> inspect: anItem [
-	(anItem inspectIn: self) open title: anItem shortDescription.
+
+	(anItem inspectIn: self) openWithSpec title: anItem shortDescription.
+]
+
+{ #category : #accessing }
+RBEnvironmentsPresenter >> notWithScope: anItem [ 
+	
+	[ | newScope |
+	newScope := anItem not.
+	(self confirm: 'Do you want store this result in the list?') 
+		ifTrue: [
+			RefactoringSettings addScope: newScope.
+			self updateList.
+		] ifFalse: [ newScope inspect ] ] 
+	on: Error 
+	do: [ :e | self inform: 'Something was wrong']
 ]
 
 { #category : #actions }
@@ -176,7 +191,7 @@ RBEnvironmentsPresenter >> performOperation: aSymbol with: anItem [
 
 { #category : #actions }
 RBEnvironmentsPresenter >> remove: anItem [
-	RefactoringSettings removeScopeNamed: anItem label.
+	RefactoringSettings removeScopeNamed: anItem description.
 	self updateList 
 ]
 
