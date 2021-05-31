@@ -9,7 +9,6 @@ RBBrowserEnvironmentWrapper >> query: aQuery [
 		^ClyUnknownQueryResult instance ].
 
 	aQuery ensureScope: self.
-
 	^environment query: aQuery
 ]
 

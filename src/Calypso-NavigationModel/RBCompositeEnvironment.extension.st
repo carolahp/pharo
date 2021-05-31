@@ -9,6 +9,5 @@ RBCompositeEnvironment >> query: aQuery [
 		^ClyUnknownQueryResult instance ].
 
 	aQuery ensureScope: self.
-
 	^RBBrowserEnvironment default query: aQuery
 ]

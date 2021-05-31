@@ -56,6 +56,11 @@ RBBrowserEnvironment >> & anEnvironment [
 	^RBAndEnvironment onEnvironment: self and: anEnvironment
 ]
 
+{ #category : #private }
+RBBrowserEnvironment >> accessGuard [ 
+	^ accessGuard ifNil: [ accessGuard := Mutex new ]
+]
+
 { #category : #accessing }
 RBBrowserEnvironment >> accessGuard [
 	^ accessGuard ifNil: [ accessGuard := Mutex new ]
@@ -266,7 +271,7 @@ RBBrowserEnvironment >> classesDo: aBlock [
 			ifTrue: [aBlock value: each ] ]
 ]
 
-{ #category : #cleaning }
+{ #category : #private }
 RBBrowserEnvironment >> cleanGarbageInCache [
 
 	self accessGuard critical: [ self queryCache clyCleanGarbage ]
@@ -290,7 +295,6 @@ RBBrowserEnvironment >> defaultName [
 
 { #category : #accessing }
 RBBrowserEnvironment >> defaultPlugins [
-
 	^ OrderedCollection new
 ]
 
@@ -369,7 +373,7 @@ RBBrowserEnvironment >> forPragmas: aKeywordCollection [
 	^ RBPragmaEnvironment onEnvironment: self keywords: aKeywordCollection
 ]
 
-{ #category : #announcements }
+{ #category : #printing }
 RBBrowserEnvironment >> handleSystemChange: aSystemAnnouncement [
 
 	| todoList todoSize anyResult |
@@ -473,7 +477,6 @@ RBBrowserEnvironment >> isBasedOnEmptyBasis [
 
 { #category : #testing }
 RBBrowserEnvironment >> isBoundToEnvironment [
-
 	^ true
 ]
 
@@ -621,6 +624,22 @@ RBBrowserEnvironment >> plugins [
 ]
 
 { #category : #actions }
+RBBrowserEnvironment >> pluginsDo: aBlock [
+	^ self plugins do: aBlock
+]
+
+{ #category : #printing }
+RBBrowserEnvironment >> printDescriptionOn: aStream [
+
+	aStream nextPutAll: self description
+]
+
+{ #category : #printing }
+RBBrowserEnvironment >> plugins [ 
+	^ plugins ifNil: [ self defaultPlugins ]
+]
+
+{ #category : #printing }
 RBBrowserEnvironment >> pluginsDo: aBlock [
 	^ self plugins do: aBlock
 ]
@@ -803,7 +822,6 @@ RBBrowserEnvironment >> storeOn: aStream [
 
 { #category : #testing }
 RBBrowserEnvironment >> supportsQuery: aQuery [
-
 	^true
 ]
 
@@ -834,6 +852,35 @@ RBBrowserEnvironment >> traitsDo: aBlock [
 	self systemDictionary allTraitsDo: [ :each | 
 		(self includesClass: each)
 			ifTrue: [ aBlock value: each ]  ]
+]
+
+{ #category : #printing }
+RBBrowserEnvironment >> updateGuard [
+	^ updateGuard ifNil: [ updateGuard := Mutex new. ]
+]
+
+{ #category : #printing }
+RBBrowserEnvironment >> updateUsing: newUpdateStrategy by: updateBlock [
+	"here is special logic to break current mutex when any error is signalled.
+	Without this logic fixing code inside spawned debugger will lead to deadlock
+	because applying method changes will blocked at this accessGuard.
+	Breaking mutex is done by creating new one which meand that current process
+	is not guarded any more and proceeding execution in debugger can lead to some errors in rare cases. But it is less problem than locked UI"
+	[
+		self updateGuard critical: [ | oldStrategy |
+			oldStrategy := updateStrategy.
+			[
+				updateStrategy := newUpdateStrategy.
+				updateBlock on: Error do: [ :err |
+					updateStrategy := oldStrategy.
+					updateGuard := Mutex new.
+					err pass]
+			] ensure: [ 
+				self updateStrategy == newUpdateStrategy ifTrue: [ 
+					"In case of error another process can set up new strategy. 
+					This condition will avoid possible collision"
+					updateStrategy := oldStrategy ]]]
+	] ensure: [ newUpdateStrategy publishCollectedChanges]
 ]
 
 { #category : #accessing }

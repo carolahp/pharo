@@ -165,6 +165,7 @@ ClyFullBrowserMorph >> adoptForExtendedClass [
 ClyFullBrowserMorph >> allNavigationScopes [
 	
 	| classLocalScope |
+
 	classLocalScope := self classSelection asItemsScope: ClyBothMetaLevelClassScope.
 
 	^super allNavigationScopes, { 
