@@ -810,7 +810,7 @@ RBBrowserEnvironment >> selectorsForClass: aClass do: aBlock [
 { #category : #description }
 RBBrowserEnvironment >> shortDescription [
 	
-	^ self description contractTo: 30
+	^ self description contractTo: 50
 ]
 
 { #category : #printing }
