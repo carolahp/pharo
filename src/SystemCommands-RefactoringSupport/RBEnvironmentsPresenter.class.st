@@ -196,9 +196,9 @@ RBEnvironmentsPresenter >> remove: anItem [
 ]
 
 { #category : #actions }
-RBEnvironmentsPresenter >> selectAnotherScope [ 
+RBEnvironmentsPresenter >> selectAnotherScopeWhitout: anItem [
 	| anotherScope list |
-	list := RefactoringSettings scopeList.
+	list := RefactoringSettings scopeList copyWithout: anItem.
 	anotherScope := UIManager default
 			chooseFrom: (list collect: #shortDescription)
 			values: list
