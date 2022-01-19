@@ -24,7 +24,8 @@ Class {
 		'#options',
 		'#targetInstance => WeakSlot',
 		'#oneShot',
-		'#enabled'
+		'#enabled',
+		'#tag'
 	],
 	#classVars : [
 		'#AllBreakpoints'
@@ -201,6 +202,12 @@ Breakpoint class >> removeFromMethod: aMethod [
 			ifFound: [ breakpoint removeFromMethod: aMethod ] ]
 ]
 
+{ #category : #querying }
+Breakpoint class >> selectByTag: anObject [
+
+	^ self all select: [ :bp | bp hasTag: anObject ]
+]
+
 { #category : #'observers - experimental' }
 Breakpoint class >> unregisterObserver: anObject [
 	"Do not use this method, it is there for compatibility with old users.
@@ -254,6 +261,16 @@ Breakpoint >> disable [
 { #category : #api }
 Breakpoint >> enable [
 	enabled := true
+]
+
+{ #category : #testing }
+Breakpoint >> hasTag [
+	^ self tag notNil
+]
+
+{ #category : #testing }
+Breakpoint >> hasTag: anObject [
+	^ self tag notNil and: [ self tag == anObject ]
 ]
 
 { #category : #initialization }
@@ -365,6 +382,11 @@ Breakpoint >> removeFromNodeProperty [
 ]
 
 { #category : #api }
+Breakpoint >> removeTag [
+	^ tag := nil
+]
+
+{ #category : #api }
 Breakpoint >> scopeTo: anInstance [
 	self targetInstance: anInstance
 ]
@@ -373,6 +395,16 @@ Breakpoint >> scopeTo: anInstance [
 Breakpoint >> setAsNodeProperty [
 	self node addBreakpoint: self
 	
+]
+
+{ #category : #accessing }
+Breakpoint >> tag [
+	^ tag
+]
+
+{ #category : #accessing }
+Breakpoint >> tag: anObject [
+	tag := anObject
 ]
 
 { #category : #accessing }

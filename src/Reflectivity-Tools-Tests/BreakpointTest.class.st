@@ -58,6 +58,17 @@ BreakpointTest >> testAddRemoveBreakpoint [
 ]
 
 { #category : #tests }
+BreakpointTest >> testAddTag [
+
+	| bp tag |
+	bp := Breakpoint new.
+	tag := Object new.
+	bp tag: tag.
+	self assert: bp hasTag.
+	self assert: bp tag identicalTo: tag
+]
+
+{ #category : #tests }
 BreakpointTest >> testBreakInContextNode [
 
 	|observer breakpoint|
@@ -147,6 +158,26 @@ BreakpointTest >> testDisableEnableBreakpoint [
 	breakpoint enable.
 	self should: [breakpoint breakInContext: self node: #node] raise: Break
 
+]
+
+{ #category : #tests }
+BreakpointTest >> testHasTag [
+
+	| bp tag |
+	bp := Breakpoint new.
+	tag := Object new.
+	bp tag: tag.
+	self assert: (bp hasTag: tag).
+	self deny: (bp hasTag: Object new)
+]
+
+{ #category : #tests }
+BreakpointTest >> testInitialTag [
+
+	| bp |
+	bp := Breakpoint new.
+
+	self deny: bp hasTag
 ]
 
 { #category : #tests }
@@ -260,6 +291,19 @@ BreakpointTest >> testRemoveMethodWithBreakpoint [
 ]
 
 { #category : #tests }
+BreakpointTest >> testRemoveTag [
+
+	| bp tag |
+	bp := Breakpoint new.
+	tag := Object new.
+	bp tag: tag.
+	self assert: bp hasTag.
+	bp removeTag.
+	self deny: bp hasTag
+	
+]
+
+{ #category : #tests }
 BreakpointTest >> testScopeTo [
 	|bp object|	
 	bp := Breakpoint new.
@@ -268,6 +312,28 @@ BreakpointTest >> testScopeTo [
 	
 	self assert: bp targetInstance identicalTo: object.
 	self assert: bp isObjectCentric
+]
+
+{ #category : #tests }
+BreakpointTest >> testSelectByTag [
+
+	| bp1 bp2 bp3 tag ast |
+	
+	ast := (ReflectivityExamples >> #exampleAssignment) ast.
+
+	bp1 := Breakpoint new.
+	bp2 := Breakpoint new.
+	bp3 := Breakpoint new.
+	bp1 node: ast.
+	bp2 node: ast.
+	bp3 node: ast.
+	tag := Object new.
+	bp1 tag: tag.
+	bp2 tag: tag.
+	Breakpoint addBreakpoint: bp1.
+	Breakpoint addBreakpoint: bp2.
+	Breakpoint addBreakpoint: bp3.
+	self assertCollection: (Breakpoint selectByTag: tag) hasSameElements: { bp1 . bp2 }
 ]
 
 { #category : #tests }
