@@ -2,24 +2,25 @@
 I am a command to add class hierarchy scope to listScopes
 "
 Class {
-	#name : #SycAddHierarchyScopeCommand,
+	#name : #SycAddHierarchyToNewScopeCommand,
 	#superclass : #SycSingleClassCommand,
 	#category : #'SystemCommands-ClassCommands-Scope'
 }
 
 { #category : #accessing }
-SycAddHierarchyScopeCommand >> defaultMenuIconName [
+SycAddHierarchyToNewScopeCommand >> defaultMenuIconName [
 	^ #add
 ]
 
 { #category : #accessing }
-SycAddHierarchyScopeCommand >> defaultMenuItemName [
-	^ 'Add hierarchy to scope list'
+SycAddHierarchyToNewScopeCommand >> defaultMenuItemName [
+	^ 'Add hierarchy to new scope'
 ]
 
 { #category : #execution }
-SycAddHierarchyScopeCommand >> execute [
+SycAddHierarchyToNewScopeCommand >> execute [
 	| scope |
 	scope :=  RBBrowserEnvironment new forClassHierarchy: targetClass.
-	RefactoringSettings addScope: scope
+	RefactoringSettings addScope: scope.
+	RBEnvironmentsPresenter openSelecting: scope
 ]

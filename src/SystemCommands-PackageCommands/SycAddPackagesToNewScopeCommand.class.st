@@ -2,7 +2,7 @@
 I am a command to add packages scope to listScopes
 "
 Class {
-	#name : #SycAddPackagesScopeCommand,
+	#name : #SycAddPackagesToNewScopeCommand,
 	#superclass : #CmdCommand,
 	#instVars : [
 		'packages'
@@ -11,36 +11,37 @@ Class {
 }
 
 { #category : #accessing }
-SycAddPackagesScopeCommand >> defaultMenuIconName [
+SycAddPackagesToNewScopeCommand >> defaultMenuIconName [
 	^ #add
 ]
 
 { #category : #accessing }
-SycAddPackagesScopeCommand >> defaultMenuItemName [
-	^ 'Add to scope list'
+SycAddPackagesToNewScopeCommand >> defaultMenuItemName [
+	^ 'Add to new scope'
 ]
 
 { #category : #execution }
-SycAddPackagesScopeCommand >> execute [
+SycAddPackagesToNewScopeCommand >> execute [
 	| scope |
 	scope := RBBrowserEnvironment new forPackages: packages.
-	RefactoringSettings addScope: scope
+	RefactoringSettings addScope: scope.
+	RBEnvironmentsPresenter openSelecting: scope
 ]
 
 { #category : #accessing }
-SycAddPackagesScopeCommand >> packages [
+SycAddPackagesToNewScopeCommand >> packages [
 
 	^ packages
 ]
 
 { #category : #accessing }
-SycAddPackagesScopeCommand >> packages: anObject [
+SycAddPackagesToNewScopeCommand >> packages: anObject [
 
 	packages := anObject
 ]
 
 { #category : #execution }
-SycAddPackagesScopeCommand >> prepareFullExecutionInContext: aBrowserContext [
+SycAddPackagesToNewScopeCommand >> prepareFullExecutionInContext: aBrowserContext [
 
 	super prepareFullExecutionInContext: aBrowserContext.
 	packages := aBrowserContext selectedPackageItems collect: [:e | e actualObject ].

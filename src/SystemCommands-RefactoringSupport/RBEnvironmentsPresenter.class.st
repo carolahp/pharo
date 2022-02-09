@@ -33,6 +33,12 @@ RBEnvironmentsPresenter class >> open [
 	self new open
 ]
 
+{ #category : #specs }
+RBEnvironmentsPresenter class >> openSelecting: aScope [
+	<script>
+	^ self new selectScope: aScope; open
+]
+
 { #category : #accessing }
 RBEnvironmentsPresenter class >> title [
 	^ 'Scope options'
@@ -159,6 +165,11 @@ RBEnvironmentsPresenter >> selectAnotherScopeWhitout: anItem [
 			values: list
 			title: 'Select another scope (RBEnvironment)'.
 	^ anotherScope 
+]
+
+{ #category : #actions }
+RBEnvironmentsPresenter >> selectScope: aRBBrowserEnvironment [
+	scopeList selectItem: aRBBrowserEnvironment
 ]
 
 { #category : #actions }

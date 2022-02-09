@@ -54,7 +54,7 @@ RBBrowserEnvironmentWrapper >> descriptionBasis [
 
 	^ String streamContents: [ :s | | basis |
 		basis := self basisObjects.
-		basis ifEmpty: [ ^ self ]
+		basis ifEmpty: [ ^ '' ]
 			ifNotEmpty: [ s nextPutAll: ': ' ].
 		basis do: [ :each |
 			self printBasisObject: each on: s.

@@ -15,6 +15,11 @@ SycOpenProtocolMenuCommand >> cmCommandClass [
 ]
 
 { #category : #accessing }
+SycOpenProtocolMenuCommand >> defaultMenuIconName [
+	^#user
+]
+
+{ #category : #accessing }
 SycOpenProtocolMenuCommand >> defaultMenuItemName [
-	^'Scope'
+	^'Custom Scopes'
 ]
