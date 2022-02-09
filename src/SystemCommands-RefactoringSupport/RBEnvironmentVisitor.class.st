@@ -14,16 +14,19 @@ RBEnvironmentVisitor >> chooserClass [
 
 { #category : #visiting }
 RBEnvironmentVisitor >> visitClassEnv: rbClassEnv [
-	| list selectedList methodName items dialog |
+	| list selectedList items dialog ok |
 	list := RBBrowserEnvironment default allClasses sorted: #name ascending.
 	selectedList := (rbClassEnv classes collect: 
-		[ :e | Smalltalk globals at: e ifAbsent: [ nil ] ]) asArray sorted: #name ascending.
-	methodName := #name.
+		[ :e | Smalltalk globals at: e name ifAbsent: [ nil ] ]) asArray sorted: #name ascending.
+	
 	items := OrderedCollection new.
-	dialog := self chooserClass openOn: 
-		{ list . selectedList . methodName }
-		onAccept: [:e| items addAll: e ].
-	dialog isCancelled ifTrue: [ ^self ].
+	dialog := self chooserClass sourceItems: list chosenItems: selectedList.
+	ok := false.
+	dialog asModalWindow
+		okAction: [ ok := true ];
+		open.
+	ok ifFalse: [ ^ self ].
+	items addAll: dialog chosenItems.
 	rbClassEnv classesDo: [ :cls | rbClassEnv removeClass: cls ].
 	items do: [ :cls | rbClassEnv addClass: cls ].
 ]
