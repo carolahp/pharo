@@ -134,6 +134,20 @@ BreakpointTest >> testBreakOnceInContext [
 ]
 
 { #category : #tests }
+BreakpointTest >> testBreakpointCondition [
+
+	| bp x |
+	x := 1.
+	bp := Breakpoint new.
+
+	bp condition: [ :ctx | (ctx readVariableNamed: #x) = 1 ].
+	self should: [ bp breakInContext: thisContext node: #node ] raise: Break.
+
+	bp condition: [ :ctx | (ctx readVariableNamed: #x) = 2 ].
+	self shouldnt: [ bp breakInContext: thisContext node: #node ] raise: Break
+]
+
+{ #category : #tests }
 BreakpointTest >> testBreakpointEnabled [
 	| breakpoint |
 	breakpoint := Breakpoint new.
@@ -164,6 +178,19 @@ BreakpointTest >> testBreakpointNodeProperty [
 	self assertCollection: (cls >> #dummy) ast breakpoints equals: {breakpoint} asSet.
 	breakpoint remove.
 	self deny: (cls >> #dummy) ast hasBreakpoint.
+]
+
+{ #category : #tests }
+BreakpointTest >> testConditionalBreakpoint [
+
+	| bp x |
+	bp := Breakpoint new.
+	bp condition: [ :ctx | (ctx readVariableNamed: #x) = 1 ].
+
+	x := 1.
+	self should: [ bp breakInContext: thisContext node: #node ] raise: Break.
+	x := 2.
+	self shouldnt: [ bp breakInContext: thisContext node: #node ] raise: Break
 ]
 
 { #category : #tests }
