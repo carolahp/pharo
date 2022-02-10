@@ -83,14 +83,21 @@ ClyAddConditionalBreakpointCommand >> prepareFullExecutionInContext: aBrowserCon
 
 { #category : #execution }
 ClyAddConditionalBreakpointCommand >> requestConditionBlock [
-	| script |
+	| script presenter |
+
 	script := 'true'.
-	script := UIManager default 
-		request: 'This expression will be evaluated in the context of the position of this breakpoint.
-		You can use variables, globals, `thisContext`, `self` and `super`.
-		`:=` and Pool variables are not supported`'
-		initialAnswer: script
-		title: 'Break on what condition?'.
+	
+	presenter := SpCodePresenter new.
+	presenter text: script;
+		beForMethod: method;
+		withSyntaxHighlight; "this doesn't seem to work"
+		text: script;
+		property: #titleHolder rawValue: 'Write the breakpoint''s condition'.
+	presenter asModalWindow
+		whenOpenedDo: [ presenter selectAll ];
+		cancelAction: [ presenter text: '' ];
+		open.
+	script := presenter text.
 	script isEmptyOrNil ifTrue: [ CmdCommandAborted signal ].
 	^ self generateConditionBlockFrom: script
 ]
