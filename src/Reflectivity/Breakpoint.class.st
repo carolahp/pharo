@@ -73,13 +73,6 @@ Breakpoint class >> browseAll [
 	Smalltalk tools messageList browse: methods
 ]
 
-{ #category : #testing }
-Breakpoint class >> checkBreakConditionValue: aValue [
-
-	(aValue isKindOf: Boolean) ifTrue: [ ^ aValue ].
-	Error signal: 'Breakpoint condition returned a non boolean value'.
-]
-
 { #category : #cleanup }
 Breakpoint class >> cleanUp [
 
@@ -231,12 +224,18 @@ Breakpoint >> always [
 
 { #category : #api }
 Breakpoint >> breakInContext: aContext node: aNode [
-	 <debuggerCompleteToSender>
-	
-	 self class notifyBreakpointHit: self inContext: aContext node: aNode.
-	 self isEnabled ifFalse: [ ^ self ].
-	 self oneShot ifTrue: [ self disable ].
-	 Break break
+
+	<debuggerCompleteToSender>
+	[ (self condition cull: aContext) ifFalse: [ ^ self ] ]
+		on: Error
+		do: [ 
+			self flag:
+				'we should decide how to inform that the condition is wrong'.
+			^ self ].
+	self class notifyBreakpointHit: self inContext: aContext node: aNode.
+	self isEnabled ifFalse: [ ^ self ].
+	self oneShot ifTrue: [ self disable ].
+	Break break
 ]
 
 { #category : #links }
@@ -250,17 +249,16 @@ Breakpoint >> breakLink [
 		  arguments: #(#context #node)
 ]
 
-{ #category : #links }
-Breakpoint >> breakLinkConditional [
+{ #category : #accessing }
+Breakpoint >> condition [
 
-	^self breakLink condition: condition arguments: #(context)
+	^ condition ifNil: [ condition := [ true ] ]
 ]
 
 { #category : #api }
-Breakpoint >> condition: aCondition [
+Breakpoint >> condition: aBlock [
 
-	condition := aCondition.
-	self link: self breakLinkConditional
+	condition := aBlock
 ]
 
 { #category : #api }
