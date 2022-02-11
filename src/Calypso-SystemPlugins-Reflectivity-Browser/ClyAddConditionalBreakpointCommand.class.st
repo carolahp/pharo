@@ -87,20 +87,9 @@ ClyAddConditionalBreakpointCommand >> requestConditionBlock [
 	| script presenter |
 	script := 'true'.
 
-	presenter := SpCodePresenter new.
-	presenter
-		text: script;
-		interactionModel:
-			(SpCodeScriptingInMethodInteractionModel on: method);
-		behavior: method methodClass;
-		withSyntaxHighlight;
-		text: script;
-		property: #titleHolder
-		rawValue: 'Write the breakpoint''s condition'.
-	presenter asModalWindow
-		whenOpenedDo: [ presenter selectAll ];
-		cancelAction: [ presenter text: '' ];
-		open.
+	presenter := SpCodeScriptingInMethodPresenter on: method.
+	presenter text: script.
+	presenter asModalWindow cancelAction: [ presenter text: '' ]; open.
 	script := presenter text.
 	script isEmptyOrNil ifTrue: [ CmdCommandAborted signal ].
 	^ self generateConditionBlockFrom: script
