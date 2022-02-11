@@ -83,16 +83,20 @@ ClyAddConditionalBreakpointCommand >> prepareFullExecutionInContext: aBrowserCon
 
 { #category : #execution }
 ClyAddConditionalBreakpointCommand >> requestConditionBlock [
-	| script presenter |
 
+	| script presenter |
 	script := 'true'.
-	
+
 	presenter := SpCodePresenter new.
-	presenter text: script;
-		beForMethod: method;
-		withSyntaxHighlight; "this doesn't seem to work"
+	presenter
 		text: script;
-		property: #titleHolder rawValue: 'Write the breakpoint''s condition'.
+		interactionModel:
+			(SpCodeScriptingInMethodInteractionModel on: method);
+		behavior: method methodClass;
+		withSyntaxHighlight;
+		text: script;
+		property: #titleHolder
+		rawValue: 'Write the breakpoint''s condition'.
 	presenter asModalWindow
 		whenOpenedDo: [ presenter selectAll ];
 		cancelAction: [ presenter text: '' ];
