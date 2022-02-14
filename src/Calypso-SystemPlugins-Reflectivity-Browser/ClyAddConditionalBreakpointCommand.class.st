@@ -17,27 +17,15 @@ Class {
 }
 
 { #category : #activation }
-ClyAddConditionalBreakpointCommand class >> contextMenuOrder [
-	^1.2
+ClyAddConditionalBreakpointCommand class >> conditionBlockFromRawSourceCode: aString [
+	| conditionBlockProducerMethodAST |
+	conditionBlockProducerMethodAST := self conditionBlockProducerMethodAST: aString.
+
+	^ ((conditionBlockProducerMethodAST generateWithSource) valueWithReceiver: nil arguments: {}).
 ]
 
-{ #category : #execution }
-ClyAddConditionalBreakpointCommand >> applyBreakpointCondition: aBreakpoint [
-	aBreakpoint condition: conditionBlock
-]
-
-{ #category : #accessing }
-ClyAddConditionalBreakpointCommand >> conditionBlock [
-	^ conditionBlock
-]
-
-{ #category : #accessing }
-ClyAddConditionalBreakpointCommand >> conditionBlock: anObject [
-	conditionBlock := anObject
-]
-
-{ #category : #'block generation' }
-ClyAddConditionalBreakpointCommand >> conditionBlockProducerMethodAST: conditionString [
+{ #category : #activation }
+ClyAddConditionalBreakpointCommand class >> conditionBlockProducerMethodAST: conditionString [
 	| conditionBlockProducerMethodAST conditionAST |
 	conditionAST := self parserClass parseExpression: conditionString.
 	conditionBlockProducerMethodAST := RBMethodNode
@@ -56,47 +44,39 @@ ClyAddConditionalBreakpointCommand >> conditionBlockProducerMethodAST: condition
 	^ conditionBlockProducerMethodAST
 ]
 
-{ #category : #accessing }
-ClyAddConditionalBreakpointCommand >> defaultMenuItemName [
-	^'Break on  ', sourceNode displaySourceCode, '  when ...'
+{ #category : #activation }
+ClyAddConditionalBreakpointCommand class >> contextMenuOrder [
+	^1.2
 ]
 
-{ #category : #'block generation' }
-ClyAddConditionalBreakpointCommand >> generateConditionBlockFrom: aString [
-	| conditionBlockProducerMethodAST |
-	conditionBlockProducerMethodAST := self conditionBlockProducerMethodAST: aString.
-
-	^ ((conditionBlockProducerMethodAST generateWithSource) valueWithReceiver: nil arguments: {}).
-]
-
-{ #category : #'block generation' }
-ClyAddConditionalBreakpointCommand >> parserClass [
+{ #category : #activation }
+ClyAddConditionalBreakpointCommand class >> parserClass [
 	^ RBParser
 ]
 
-{ #category : #execution }
-ClyAddConditionalBreakpointCommand >> prepareFullExecutionInContext: aBrowserContext [
-	super prepareFullExecutionInContext: aBrowserContext.
+{ #category : #converting }
+ClyAddConditionalBreakpointCommand class >> rawSourceCodeOfConditionBlock: aBlock [
+
+	| ast rewriter matchVarRead matchBlockWrap |
 	
-	conditionBlock := self requestConditionBlock
+	ast := self parserClass parseExpression: aBlock asString.
+	rewriter := self rewriterClass new.
+	
+	matchVarRead := '(ThisContext readVariableNamed: `#varName)'.
+	rewriter replace: matchVarRead withValueFrom: [ :aNode | 
+		RBVariableNode named:
+			(aNode arguments anyOne sourceText copyReplaceAll: '#' with: '') ].
+	rewriter executeTree: ast.
+	
+	matchBlockWrap := '[ :ThisContext | `@expression ]'.	
+	rewriter replace: matchBlockWrap with: '`@expression'.
+	rewriter executeTree: ast.
+
+	^ rewriter tree formattedCode
 ]
 
-{ #category : #execution }
-ClyAddConditionalBreakpointCommand >> requestConditionBlock [
-
-	| script presenter |
-	script := 'true'.
-
-	presenter := SpCodeScriptingInMethodPresenter on: method.
-	presenter text: script.
-	presenter asModalWindow cancelAction: [ presenter text: '' ]; open.
-	script := presenter text.
-	script isEmptyOrNil ifTrue: [ CmdCommandAborted signal ].
-	^ self generateConditionBlockFrom: script
-]
-
-{ #category : #'block generation' }
-ClyAddConditionalBreakpointCommand >> rewriteASTToSimulateExecutionInADifferentContext: anAST [
+{ #category : #activation }
+ClyAddConditionalBreakpointCommand class >> rewriteASTToSimulateExecutionInADifferentContext: anAST [
 	| semanticallyAnalysedMethodAST allUndeclaredVariableNodes allUndeclaredVariableSymbols rewriter rewrittenConditionBlockProducerAST allMessageNodes receiverSuperclassValueNode intermediateAST analysedIntermediateAST rewriter2 |
 	"AnAST is the AST of a method returning a block taking a context as its argument named `ThisContext` and whose body is the condition of this conditional breakpoint.
 	The goal is to rewrite this AST so that evaluating the block by passing it a context as argument will evaluate its body as it would have been evaluated in the passed context.
@@ -153,4 +133,50 @@ ClyAddConditionalBreakpointCommand >> rewriteASTToSimulateExecutionInADifferentC
 		executeTree: analysedIntermediateAST;
 		tree.
 	^ rewrittenConditionBlockProducerAST doSemanticAnalysis
+]
+
+{ #category : #activation }
+ClyAddConditionalBreakpointCommand class >> rewriterClass [
+	^ RBParseTreeRewriter
+]
+
+{ #category : #execution }
+ClyAddConditionalBreakpointCommand >> applyBreakpointCondition: aBreakpoint [
+	aBreakpoint condition: conditionBlock
+]
+
+{ #category : #accessing }
+ClyAddConditionalBreakpointCommand >> conditionBlock [
+	^ conditionBlock
+]
+
+{ #category : #accessing }
+ClyAddConditionalBreakpointCommand >> conditionBlock: anObject [
+	conditionBlock := anObject
+]
+
+{ #category : #accessing }
+ClyAddConditionalBreakpointCommand >> defaultMenuItemName [
+	^'Break on  ', sourceNode displaySourceCode, '  when ...'
+]
+
+{ #category : #execution }
+ClyAddConditionalBreakpointCommand >> prepareFullExecutionInContext: aBrowserContext [
+	super prepareFullExecutionInContext: aBrowserContext.
+	
+	conditionBlock := self requestConditionBlock
+]
+
+{ #category : #execution }
+ClyAddConditionalBreakpointCommand >> requestConditionBlock [
+
+	| script presenter |
+	script := 'true'.
+
+	presenter := SpCodeScriptingInMethodPresenter on: method.
+	presenter text: script.
+	presenter asModalWindow cancelAction: [ presenter text: '' ]; open.
+	script := presenter text.
+	script isEmptyOrNil ifTrue: [ CmdCommandAborted signal ].
+	^ self class conditionBlockFromRawSourceCode: script
 ]
