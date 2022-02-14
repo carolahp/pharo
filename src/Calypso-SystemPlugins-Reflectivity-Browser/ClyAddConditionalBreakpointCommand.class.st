@@ -49,12 +49,12 @@ ClyAddConditionalBreakpointCommand class >> contextMenuOrder [
 	^1.2
 ]
 
-{ #category : #activation }
+{ #category : #default }
 ClyAddConditionalBreakpointCommand class >> parserClass [
 	^ RBParser
 ]
 
-{ #category : #converting }
+{ #category : #activation }
 ClyAddConditionalBreakpointCommand class >> rawSourceCodeOfConditionBlock: aBlock [
 
 	| ast rewriter matchVarRead matchBlockWrap |
@@ -135,7 +135,7 @@ ClyAddConditionalBreakpointCommand class >> rewriteASTToSimulateExecutionInADiff
 	^ rewrittenConditionBlockProducerAST doSemanticAnalysis
 ]
 
-{ #category : #activation }
+{ #category : #default }
 ClyAddConditionalBreakpointCommand class >> rewriterClass [
 	^ RBParseTreeRewriter
 ]
