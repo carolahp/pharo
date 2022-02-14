@@ -13,94 +13,94 @@ ClyAddConditionalBreakpointCommandTest >> parserClass [
 ClyAddConditionalBreakpointCommandTest >> testMessageSend_conditionBlockProducerMethodAST [
 	self
 		assert:
-			(ClyAddConditionalBreakpointCommand new
+			(ClyAddConditionalBreakpointCommand 
 				conditionBlockProducerMethodAST: 'val msg: arg')
 		equals:
 			(self parserClass
 				parseMethod:
-					'conditionBlockGenerator ^[ :ThisContext | Breakpoint checkBreakConditionValue: ((ThisContext readVariableNamed: #val) msg: (ThisContext readVariableNamed: #arg))]')
+					'conditionBlockGenerator ^[ :ThisContext | (ThisContext readVariableNamed: #val) msg: (ThisContext readVariableNamed: #arg)]')
 ]
 
 { #category : #tests }
 ClyAddConditionalBreakpointCommandTest >> testSelf_conditionBlockProducerMethodAST [
 	self
 		assert:
-			(ClyAddConditionalBreakpointCommand new
+			(ClyAddConditionalBreakpointCommand 
 				conditionBlockProducerMethodAST: 'self')
 		equals:
 			(self parserClass
 				parseMethod:
-					'conditionBlockGenerator ^[ :ThisContext | Breakpoint checkBreakConditionValue: ThisContext receiver ]')
+					'conditionBlockGenerator ^[ :ThisContext | ThisContext receiver ]')
 ]
 
 { #category : #tests }
 ClyAddConditionalBreakpointCommandTest >> testSimpleCondition_conditionBlockProducerMethodAST [
 	self
 		assert:
-			(ClyAddConditionalBreakpointCommand new
+			(ClyAddConditionalBreakpointCommand 
 				conditionBlockProducerMethodAST: 'true')
 		equals:
 			(self parserClass
 				parseMethod:
-					'conditionBlockGenerator ^[ :ThisContext | Breakpoint checkBreakConditionValue: true ]')
+					'conditionBlockGenerator ^[ :ThisContext | true ]')
 ]
 
 { #category : #tests }
 ClyAddConditionalBreakpointCommandTest >> testSuperSendNoArg_conditionBlockProducerMethodAST [
 	self
 		assert:
-			(ClyAddConditionalBreakpointCommand new
+			(ClyAddConditionalBreakpointCommand 
 				conditionBlockProducerMethodAST: 'super msg')
 		equals:
 			(self parserClass
 				parseMethod:
-					'conditionBlockGenerator ^[ :ThisContext | Breakpoint checkBreakConditionValue: (ThisContext receiver perform: #msg withArguments: {} inSuperclass: ThisContext receiver class superclass)]')
+					'conditionBlockGenerator ^[ :ThisContext | ThisContext receiver perform: #msg withArguments: {} inSuperclass: ThisContext receiver class superclass ]')
 ]
 
 { #category : #tests }
 ClyAddConditionalBreakpointCommandTest >> testSuperSendWithArgs_conditionBlockProducerMethodAST [
 	self
 		assert:
-			(ClyAddConditionalBreakpointCommand new
+			(ClyAddConditionalBreakpointCommand 
 				conditionBlockProducerMethodAST: 'super foo: arg1 bar: arg2')
 		equals:
 			(self parserClass
 				parseMethod:
-					'conditionBlockGenerator ^[ :ThisContext | Breakpoint checkBreakConditionValue: (ThisContext receiver perform: #foo:bar: withArguments: {ThisContext readVariableNamed: #arg1. ThisContext readVariableNamed: #arg2.} inSuperclass: ThisContext receiver class superclass)]')
+					'conditionBlockGenerator ^[ :ThisContext | ThisContext receiver perform: #foo:bar: withArguments: {ThisContext readVariableNamed: #arg1. ThisContext readVariableNamed: #arg2.} inSuperclass: ThisContext receiver class superclass ]')
 ]
 
 { #category : #tests }
 ClyAddConditionalBreakpointCommandTest >> testVariableLookup_conditionBlockProducerMethodAST [
 	self
 		assert:
-			(ClyAddConditionalBreakpointCommand new
+			(ClyAddConditionalBreakpointCommand 
 				conditionBlockProducerMethodAST: 'var')
 		equals:
 			(self parserClass
 				parseMethod:
-					'conditionBlockGenerator ^[ :ThisContext | Breakpoint checkBreakConditionValue: (ThisContext readVariableNamed: #var)]')
+					'conditionBlockGenerator ^[ :ThisContext | ThisContext readVariableNamed: #var ]')
 ]
 
 { #category : #tests }
 ClyAddConditionalBreakpointCommandTest >> testVariableNamedThisContext_conditionBlockProducerMethodAST [
 	self
 		assert:
-			(ClyAddConditionalBreakpointCommand new
+			(ClyAddConditionalBreakpointCommand 
 				conditionBlockProducerMethodAST: 'ThisContext')
 		equals:
 			(self parserClass
 				parseMethod:
-					'conditionBlockGenerator ^[ :ThisContext | Breakpoint checkBreakConditionValue: (ThisContext readVariableNamed: #ThisContext)]')
+					'conditionBlockGenerator ^[ :ThisContext | ThisContext readVariableNamed: #ThisContext ]')
 ]
 
 { #category : #tests }
 ClyAddConditionalBreakpointCommandTest >> testthisContext_conditionBlockProducerMethodAST [
 	self
 		assert:
-			(ClyAddConditionalBreakpointCommand new
+			(ClyAddConditionalBreakpointCommand 
 				conditionBlockProducerMethodAST: 'thisContext')
 		equals:
 			(self parserClass
 				parseMethod:
-					'conditionBlockGenerator ^[ :ThisContext | Breakpoint checkBreakConditionValue: ThisContext ]')
+					'conditionBlockGenerator ^[ :ThisContext | ThisContext ]')
 ]
