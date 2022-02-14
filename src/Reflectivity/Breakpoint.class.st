@@ -228,10 +228,13 @@ Breakpoint >> breakInContext: aContext node: aNode [
 	<debuggerCompleteToSender>
 	[ (self condition cull: aContext) ifFalse: [ ^ self ] ]
 		on: Error
-		do: [ 
-			self flag:
-				'we should decide how to inform that the condition is wrong'.
-			^ self ].
+		do: [ :e | 
+			e class = BlockCannotReturn
+				ifTrue: [ e result ifFalse: [ ^ self ] ]
+				ifFalse: [ 
+					self flag:
+						'we should decide how to inform that the condition is wrong'.
+					^ self ] ].
 	self class notifyBreakpointHit: self inContext: aContext node: aNode.
 	self isEnabled ifFalse: [ ^ self ].
 	self oneShot ifTrue: [ self disable ].

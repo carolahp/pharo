@@ -148,6 +148,29 @@ BreakpointTest >> testBreakpointCondition [
 ]
 
 { #category : #tests }
+BreakpointTest >> testBreakpointConditionNotBoolean [
+
+	| bp |
+	bp := Breakpoint new.
+	
+	bp condition: Object new.
+	self shouldnt: [ bp breakInContext: thisContext node: #node ] raise: Break
+]
+
+{ #category : #tests }
+BreakpointTest >> testBreakpointConditionWithReturn [
+
+	| bp |
+	bp := Breakpoint new.
+
+	bp condition: [:ctx | ^ true ].
+	self should: [ bp breakInContext: thisContext node: #node ] raise: Break.
+	
+	bp condition: [:ctx | ^ false ].
+	self shouldnt: [ bp breakInContext: thisContext node: #node ] raise: Break
+]
+
+{ #category : #tests }
 BreakpointTest >> testBreakpointEnabled [
 	| breakpoint |
 	breakpoint := Breakpoint new.
