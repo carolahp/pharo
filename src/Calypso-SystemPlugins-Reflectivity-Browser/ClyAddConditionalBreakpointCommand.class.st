@@ -17,132 +17,18 @@ Class {
 }
 
 { #category : #activation }
-ClyAddConditionalBreakpointCommand class >> conditionBlockFromRawSourceCode: aString [
-	| conditionBlockProducerMethodAST |
-	conditionBlockProducerMethodAST := self conditionBlockProducerMethodAST: aString.
-
-	^ ((conditionBlockProducerMethodAST generateWithSource) valueWithReceiver: nil arguments: {}).
-]
-
-{ #category : #activation }
-ClyAddConditionalBreakpointCommand class >> conditionBlockProducerMethodAST: conditionString [
-	| conditionBlockProducerMethodAST conditionAST |
-	conditionAST := self parserClass parseExpression: conditionString.
-	conditionBlockProducerMethodAST := RBMethodNode
-		selector: #conditionBlockGenerator
-		body:
-			(RBReturnNode
-				value:
-					(RBBlockNode
-						arguments: {(RBVariableNode named: 'ThisContext')}
-						body:
-							conditionAST asSequenceNode)) asSequenceNode.
-	conditionBlockProducerMethodAST := self
-		rewriteASTToSimulateExecutionInADifferentContext: conditionBlockProducerMethodAST.
-	conditionBlockProducerMethodAST
-		source: conditionBlockProducerMethodAST formattedCode.
-	^ conditionBlockProducerMethodAST
-]
-
-{ #category : #activation }
 ClyAddConditionalBreakpointCommand class >> contextMenuOrder [
 	^1.2
-]
-
-{ #category : #default }
-ClyAddConditionalBreakpointCommand class >> parserClass [
-	^ RBParser
-]
-
-{ #category : #activation }
-ClyAddConditionalBreakpointCommand class >> rawSourceCodeOfConditionBlock: aBlock [
-
-	| ast rewriter matchVarRead matchBlockWrap |
-	
-	ast := self parserClass parseExpression: aBlock asString.
-	rewriter := self rewriterClass new.
-	
-	matchVarRead := '(ThisContext readVariableNamed: `#varName)'.
-	rewriter replace: matchVarRead withValueFrom: [ :aNode | 
-		RBVariableNode named:
-			(aNode arguments anyOne sourceText copyReplaceAll: '#' with: '') ].
-	rewriter executeTree: ast.
-	
-	matchBlockWrap := '[ :ThisContext | `@expression ]'.	
-	rewriter replace: matchBlockWrap with: '`@expression'.
-	rewriter executeTree: ast.
-
-	^ rewriter tree formattedCode
-]
-
-{ #category : #activation }
-ClyAddConditionalBreakpointCommand class >> rewriteASTToSimulateExecutionInADifferentContext: anAST [
-	| semanticallyAnalysedMethodAST allUndeclaredVariableNodes allUndeclaredVariableSymbols rewriter rewrittenConditionBlockProducerAST allMessageNodes receiverSuperclassValueNode intermediateAST analysedIntermediateAST rewriter2 |
-	"AnAST is the AST of a method returning a block taking a context as its argument named `ThisContext` and whose body is the condition of this conditional breakpoint.
-	The goal is to rewrite this AST so that evaluating the block by passing it a context as argument will evaluate its body as it would have been evaluated in the passed context.
-	To do this, we rewrite anAST following these three rules:
-	1) Rewriting references to variables named 'ThisContext' into context lookups to avoid conflicts with the 'ThisContext' argument of the block.
-	For example, a reference to a variable named ThisContext is rewritten into `ThisContext readVariableNamed: #ThisContext`
-	2) Replacing all message nodes whose receiver is super with alternative ast replicating the method lookup a message send to super has.
-		For example, 'super foo: 1' is rewritten into 'ThisContext receiver perform: #foo withArguments: 1 inSuperclass: ThisContext receiver class superclass'
-	3) Rewriting references to undeclared variables into context lookup
-		For example, a reference to a variable named flower is rewritten into `ThisContext readVariableNamed: #flower`
-	4) Rewriting references to `thisContext` into references to `ThisContext`
-	5) Rewriting references to `self` into references to `ThisContext receiver`"
-	rewriter := RBParseTreeRewriter new.
-	semanticallyAnalysedMethodAST := anAST doSemanticAnalysis.	"To find which variables are undefined"
-	rewriter
-		replace: (RBVariableNode named: #ThisContext) name
-		with:
-			'(ThisContext readVariableNamed: #'
-				, (RBVariableNode named: #ThisContext) name , ')'.
-	allMessageNodes := semanticallyAnalysedMethodAST allChildren
-		select: [ :astElem | astElem isMessage ].
-	receiverSuperclassValueNode := self parserClass
-		parseExpression: 'ThisContext receiver class superclass'.
-	allMessageNodes
-		do: [ :msgNode | 
-			msgNode receiver isSuperVariable
-				ifTrue: [ rewriter
-						replaceTree: msgNode
-						withTree:
-							(RBMessageNode
-								receiver: (self parserClass parseExpression: 'ThisContext receiver')
-								selector: #perform:withArguments:inSuperclass:
-								arguments:
-									{(RBLiteralValueNode value: msgNode selector).
-									(RBArrayNode statements: msgNode arguments).
-									receiverSuperclassValueNode}) ] ].
-	intermediateAST := rewriter
-		executeTree: semanticallyAnalysedMethodAST;
-		tree.
-	analysedIntermediateAST := intermediateAST doSemanticAnalysis.
-	rewriter2 := RBParseTreeRewriter new.
-	allUndeclaredVariableNodes := analysedIntermediateAST allChildren
-		select: [ :astElem | astElem isVariable and: [ astElem isUndeclaredVariable ] ].
-	allUndeclaredVariableSymbols := (allUndeclaredVariableNodes
-		collect: [ :varNode | varNode name ]) asSet asArray.
-	allUndeclaredVariableSymbols
-		withIndexDo: [ :tempName :index | 
-			rewriter2
-				replace: tempName
-				with: '(ThisContext readVariableNamed: #' , tempName , ')' ].
-	rewriter2 replace: 'thisContext' with: 'ThisContext'.
-	rewriter2 replace: 'self' with: 'ThisContext receiver'.
-	rewrittenConditionBlockProducerAST := rewriter2
-		executeTree: analysedIntermediateAST;
-		tree.
-	^ rewrittenConditionBlockProducerAST doSemanticAnalysis
-]
-
-{ #category : #default }
-ClyAddConditionalBreakpointCommand class >> rewriterClass [
-	^ RBParseTreeRewriter
 ]
 
 { #category : #execution }
 ClyAddConditionalBreakpointCommand >> applyBreakpointCondition: aBreakpoint [
 	aBreakpoint condition: conditionBlock
+]
+
+{ #category : #execution }
+ClyAddConditionalBreakpointCommand >> codeScriptPresenterClass [
+	^ CodeScriptingInMethodPresenter
 ]
 
 { #category : #accessing }
@@ -173,10 +59,10 @@ ClyAddConditionalBreakpointCommand >> requestConditionBlock [
 	| script presenter |
 	script := 'true'.
 
-	presenter := SpCodeScriptingInMethodPresenter on: method.
+	presenter := self codeScriptPresenterClass on: method.
 	presenter text: script.
 	presenter asModalWindow cancelAction: [ presenter text: '' ]; open.
 	script := presenter text.
 	script isEmptyOrNil ifTrue: [ CmdCommandAborted signal ].
-	^ self class conditionBlockFromRawSourceCode: script
+	^ (BreakpointCondition fromScriptCode: script) block
 ]
