@@ -6,18 +6,36 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'breakpoint',
-		'conditionCodePresenter',
-		'saveButton'
+		'conditionScriptLabel',
+		'conditionScriptPresenter',
+		'conditionScriptAcceptButton',
+		'conditionScriptRevertButton'
 	],
 	#category : #'BreakpointNavigator-View'
 }
 
 { #category : #layout }
 BreakpointConfigurationPresenter class >> defaultLayout [
+
 	^ SpBoxLayout newTopToBottom
-		add: #conditionCodePresenter;
-		add: #saveButton;
-		yourself
+		  add: #conditionScriptLabel withConstraints: [ :constraints | 
+			  constraints
+				  fill: false;
+				  expand: false;
+				  width: self toolbarHeight ];
+		  add: (SpBoxLayout newLeftToRight
+				   add: #conditionScriptPresenter;
+				   add: (SpBoxLayout newTopToBottom
+						    add: #conditionScriptAcceptButton;
+						    add: #conditionScriptRevertButton;
+						    yourself)
+				   withConstraints: [ :constraints | 
+					   constraints
+						   fill: false;
+						   expand: false;
+						   width: self buttonWidth / 2 ];
+				   yourself);
+		  yourself
 ]
 
 { #category : #'instance creation' }
@@ -25,6 +43,14 @@ BreakpointConfigurationPresenter class >> on: aBreakpoint [
 	^ self new
 		breakpoint: aBreakpoint;
 		yourself
+]
+
+{ #category : #initialization }
+BreakpointConfigurationPresenter >> acceptConditionScript [
+
+	breakpoint condition:
+		(BreakpointCondition fromScriptCode: conditionScriptPresenter text)
+			block
 ]
 
 { #category : #accessing }
@@ -39,16 +65,53 @@ BreakpointConfigurationPresenter >> breakpoint: aBreakpoint [
 ]
 
 { #category : #accessing }
-BreakpointConfigurationPresenter >> conditionCodePresenter [
-	^ conditionCodePresenter
+BreakpointConfigurationPresenter >> conditionScriptPresenter [
+	^ conditionScriptPresenter
+]
+
+{ #category : #accessing }
+BreakpointConfigurationPresenter >> conditionScriptWidgets [
+
+	^ { 
+		  conditionScriptAcceptButton.
+		  conditionScriptRevertButton.
+		  conditionScriptLabel.
+		  conditionScriptPresenter }
+]
+
+{ #category : #initialization }
+BreakpointConfigurationPresenter >> configureConditionScriptActions [
+	
+	conditionScriptAcceptButton whenActivatedDo: [ self acceptConditionScript ].
+	conditionScriptRevertButton whenActivatedDo: [ self loadConditionScript ]
+]
+
+{ #category : #initialization }
+BreakpointConfigurationPresenter >> initializeConditionScriptWidgets [
+
+	conditionScriptLabel := self newLabel label: 'Break condition'.
+	conditionScriptPresenter := self newCodeScriptingPresenter.
+	conditionScriptAcceptButton := self newButton.
+	conditionScriptAcceptButton icon: (self iconNamed: #smallOk).
+	conditionScriptAcceptButton help: 'Save condition'.
+	conditionScriptRevertButton := self newButton.
+	conditionScriptRevertButton icon: (self iconNamed: #smallUndo).
+	conditionScriptRevertButton help: 'Revert changes'
 ]
 
 { #category : #initialization }
 BreakpointConfigurationPresenter >> initializePresenters [
+	self initializeConditionScriptWidgets.
+	self configureConditionScriptActions
+]
 
-	conditionCodePresenter := self newCodeScriptingPresenter.
-	saveButton := self newButton.
-	saveButton icon: (self iconNamed: #smallSave)
+{ #category : #updating }
+BreakpointConfigurationPresenter >> loadConditionScript [
+
+	conditionScriptPresenter method: breakpoint node methodNode method.
+	conditionScriptPresenter text:
+		(BreakpointCondition fromBlock: breakpoint condition) scriptCode
+			asString
 ]
 
 { #category : #accessing }
@@ -60,8 +123,11 @@ BreakpointConfigurationPresenter >> newCodeScriptingPresenter [
 { #category : #updating }
 BreakpointConfigurationPresenter >> privateUpdate [
 
-	conditionCodePresenter method: breakpoint node methodNode method.
-	conditionCodePresenter text:
-		(BreakpointCondition fromBlock: breakpoint condition) scriptCode
-			asString
+	breakpoint hasCondition
+		ifTrue: [ 
+			self conditionScriptWidgets do: #show.
+			self loadConditionScript ]
+		ifFalse: [ 
+			self conditionScriptWidgets do: #hide.
+			conditionScriptPresenter text: '' ]
 ]

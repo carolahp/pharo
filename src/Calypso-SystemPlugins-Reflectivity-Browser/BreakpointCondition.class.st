@@ -64,10 +64,12 @@ BreakpointCondition class >> fromBlock: aBlock [
 { #category : #'instance creation' }
 BreakpointCondition class >> fromScriptCode: aString [
 
-	| conditionBlockProducerMethodAST |
+	| script conditionBlockProducerMethodAST |
+	script := aString trim.
+	script isEmpty ifTrue: [ self error: 'Condition script cannot be empty' ].
 	conditionBlockProducerMethodAST := self 
 		                                   blockASTFromScriptCode:
-		                                   aString.
+		                                   script.
 	^ self new 
 		block: (conditionBlockProducerMethodAST generateWithSource
 		  valueWithReceiver: nil

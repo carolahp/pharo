@@ -25,8 +25,7 @@ CodeScriptingInMethodPresenter >> initialize [
 	super initialize.
 	self
 		withSyntaxHighlight;
-		property: #titleHolder
-		rawValue: 'Write the breakpoint''s condition'
+		withoutLineNumbers
 ]
 
 { #category : #accessing }

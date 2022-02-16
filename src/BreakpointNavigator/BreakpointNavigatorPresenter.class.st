@@ -31,7 +31,7 @@ BreakpointNavigatorPresenter class >> defaultLayout [
 
 	^ SpPanedLayout newVertical
 		  add: (SpPanedLayout newHorizontal
-				   positionOfSlider: 60 percent;
+				   positionOfSlider: 50 percent;
 				   add: (SpBoxLayout newVertical
 						    add: #breakpointsHeader withConstraints: [ :constraints | 
 							    constraints
@@ -41,7 +41,7 @@ BreakpointNavigatorPresenter class >> defaultLayout [
 						    add: #methodsWithBreakpoints;
 						    yourself);
 				   add: (SpBoxLayout newVertical
-						    add: #configurationHeader withConstraints: [ :constraints | 
+							add: #configurationHeader withConstraints: [ :constraints | 
 							    constraints
 								    fill: false;
 								    expand: false;
@@ -179,7 +179,7 @@ BreakpointNavigatorPresenter >> initializeHeaders [
 	codeHeader := self instantiate: StHeaderBar.
 	codeHeader label: 'Breakpoint locations in the source code'.
 	configurationHeader := self instantiate: StHeaderBar.
-	configurationHeader label: 'Breakpoint configuration'
+	configurationHeader label: 'Configuration'
 ]
 
 { #category : #initialization }

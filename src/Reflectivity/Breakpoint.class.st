@@ -255,13 +255,18 @@ Breakpoint >> breakLink [
 { #category : #accessing }
 Breakpoint >> condition [
 
-	^ condition ifNil: [ condition := [ true ] ]
+	^ condition ifNil: [ condition := self defaultConditionBlock ]
 ]
 
 { #category : #api }
 Breakpoint >> condition: aBlock [
 
 	condition := aBlock
+]
+
+{ #category : #accessing }
+Breakpoint >> defaultConditionBlock [
+	^ [ true ]
 ]
 
 { #category : #api }
@@ -272,6 +277,12 @@ Breakpoint >> disable [
 { #category : #api }
 Breakpoint >> enable [
 	enabled := true
+]
+
+{ #category : #testing }
+Breakpoint >> hasCondition [
+
+	^ self condition asString ~= self defaultConditionBlock asString
 ]
 
 { #category : #initialization }
