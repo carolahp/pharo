@@ -50,7 +50,7 @@ BreakpointNavigatorPresenter class >> defaultLayout [
 						    yourself);
 				   yourself);
 		  add: (SpPanedLayout newHorizontal 
-				positionOfSlider: 60 percent;
+				positionOfSlider: 50 percent;
 				add: (SpBoxLayout newVertical
 						    add: #methodsHeader withConstraints: [ :constraints | 
 							    constraints
