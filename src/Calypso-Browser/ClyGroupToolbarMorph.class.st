@@ -77,9 +77,6 @@ ClyGroupToolbarMorph >> updateItems [
 	
 	menu := CmdMenu activatedBy: ClyGroupToolbarActivation.
 	menu buildInContext: navigationView createSelectionContext.
-	
 	self removeAllMorphs.
- 	navigationView navigationSelector = #methodGroupSelectionChanged	
-		ifTrue: [ Transcript show: 'updateItems for protocols column';cr. self haltIf:[menu rootGroup contents isEmpty]].
-	[menu buildBrowserToolbar: self] ensure: [self show]
+ 	[menu buildBrowserToolbar: self] ensure: [self show]
 ]
