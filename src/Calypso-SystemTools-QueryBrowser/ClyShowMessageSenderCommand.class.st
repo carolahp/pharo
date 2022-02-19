@@ -24,6 +24,13 @@ ClyShowMessageSenderCommand class >> forMethods: methods by: aBrowser [
 ]
 
 { #category : #activation }
+ClyShowMessageSenderCommand class >> methodBrowserGroupToolbarActivation [
+	<classAnnotation>
+	
+	^ClyGroupToolbarActivation byItemOf: ClyButtonToolbarGroup for: ClyMethod asCalypsoItemContext
+]
+
+{ #category : #activation }
 ClyShowMessageSenderCommand class >> methodBrowserToolbarActivation [
 	<classAnnotation>
 	

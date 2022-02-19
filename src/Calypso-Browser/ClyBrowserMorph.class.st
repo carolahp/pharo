@@ -123,7 +123,8 @@ Class {
 		'navigationStarted',
 		'plugins',
 		'navigationEnvironment',
-		'systemScope'
+		'systemScope',
+		'toolbars'
 	],
 	#category : #'Calypso-Browser-UI'
 }
@@ -365,27 +366,52 @@ ClyBrowserMorph >> initialize [
 
 { #category : #initialization }
 ClyBrowserMorph >> initializeNavigationPanel [
-	
-	| eachViewExtent lastViewLeft |
+
+	| eachViewExtent lastViewLeft extentsPercent |
 	navigationPanel := PanelMorph new.
 	navigationPanel name: 'navigation panel'.
-	navigationPanel changeProportionalLayout.	
+	navigationPanel changeProportionalLayout.
 	navigationViews := OrderedCollection new.
+	toolbars := OrderedCollection new.
 	self initializeNavigationViews.
-	
+	extentsPercent := #(1 1.25 0.75 1).
 	eachViewExtent := 1.0 / navigationViews size.
 	lastViewLeft := 0.0.
-	navigationViews do: [ :each | | frame |
-		frame := (lastViewLeft @ 0.0 corner: lastViewLeft + eachViewExtent @ 1.0) asLayoutFrame.
+	navigationViews doWithIndex: [ :each :index | 
+		| frame panel eachToolbar |
+		frame := (lastViewLeft @ 0.0 corner:
+			          lastViewLeft + (eachViewExtent * (extentsPercent at: index)) @ 1.0) asLayoutFrame.
 		each == navigationViews last ifFalse: [ 
 			frame := frame rightOffset: -4 ].
-		navigationPanel 
-			addMorph: each 
-			fullFrame: frame.
-		lastViewLeft := lastViewLeft + eachViewExtent ].
-	
+
+		panel := PanelMorph new
+			         name: 'navigation view panel';
+			         layoutPolicy: SpMorphicPanedLayout new.
+		each
+			vResizing: #spaceFill;
+			hResizing: #spaceFill.
+
+		panel addMorphBack: each.
+
+		eachToolbar := (ClyGroupToolbarMorph of: each)
+			               vResizing: #rigid;
+			               height: 25;
+			               hResizing: #spaceFill;
+			               yourself.
+
+		toolbars add: eachToolbar.
+
+		panel addMorphBack: eachToolbar.
+
+		navigationPanel addMorph: panel fullFrame: frame.
+		lastViewLeft := lastViewLeft + (eachViewExtent*(extentsPercent at: index)) ].
+
 	navigationPanel addPaneSplitters.
-	self addMorph: navigationPanel fullFrame: ((0.0 @ 0 corner: 1.0 @ 0.5) asLayoutFrame bottomOffset: toolbar height negated)
+	self
+		addMorph: navigationPanel
+		fullFrame: ((0.0 @ 0 corner: 1.0 @ 0.5) asLayoutFrame bottomOffset:
+				 toolbar height negated).
+	self rebuildToolbars
 ]
 
 { #category : #initialization }
@@ -557,7 +583,14 @@ ClyBrowserMorph >> rebuildAllTools [
 { #category : #updating }
 ClyBrowserMorph >> rebuildToolbar [
 
-	toolbar updateItems
+	toolbar updateItems.
+	self rebuildToolbars
+]
+
+{ #category : #updating }
+ClyBrowserMorph >> rebuildToolbars [
+
+	 [toolbars do: #updateItems] on: Error do: [ :e | Transcript show: e description asString; cr ]
 ]
 
 { #category : #updating }

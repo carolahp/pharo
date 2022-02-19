@@ -18,6 +18,13 @@ Class {
 }
 
 { #category : #activation }
+ClyShowMessageImplementorCommand class >> methodBrowserGroupToolbarActivation [
+	<classAnnotation>
+	
+	^ClyGroupToolbarActivation byItemOf: ClyButtonToolbarGroup for: ClyMethod asCalypsoItemContext
+]
+
+{ #category : #activation }
 ClyShowMessageImplementorCommand class >> methodBrowserToolbarActivation [
 	<classAnnotation>
 	

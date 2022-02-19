@@ -18,6 +18,16 @@ Class {
 }
 
 { #category : #activation }
+ClySwitchClassMetaLevelCommand class >> fullBrowserGroupToolbarActivation1 [
+	<classAnnotation>
+	
+	^ClyGroupToolbarActivation 
+		byItemOf:  ClyClassHierarchyToolbarGroup
+		order: self toolbarOrder 
+		for: ClyFullBrowserClassContext
+]
+
+{ #category : #activation }
 ClySwitchClassMetaLevelCommand class >> fullBrowserToolbarActivation [
 	<classAnnotation>
 	
