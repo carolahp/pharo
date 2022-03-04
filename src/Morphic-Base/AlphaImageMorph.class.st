@@ -123,7 +123,7 @@ AlphaImageMorph >> drawOn: aCanvas [
 	self layout == #tiled
 		ifTrue: [aCanvas fillRectangle: self innerBounds fillStyle: (AlphaInfiniteForm with: self cachedForm)]
 		ifFalse: [aCanvas clipBy: self innerBounds during: [:c |
-					c translucentImage: self cachedForm at: self layoutPosition]]
+					c translucentImage: self cachedForm asForm at: self layoutPosition]]
 ]
 
 { #category : #accessing }

@@ -299,6 +299,11 @@ Form >> asCursorForm [
 ]
 
 { #category : #converting }
+Form >> asForm [
+	^ self
+]
+
+{ #category : #converting }
 Form >> asFormOfDepth: d [
 	| newForm |
 	d = self depth ifTrue:[^self].
