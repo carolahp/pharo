@@ -500,7 +500,7 @@ ClyBrowserMorph >> open [
 	window := self openInWindow.
 	window model: self.
 	self updateWindowTitle.
-	window minimumExtent: 675@500.0 
+	window minimumExtent: 650@500.0
 ]
 
 { #category : #'opening/closing' }

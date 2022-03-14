@@ -17,7 +17,6 @@ Class {
 SystemDependenciesTest class >> dependenciesReport [
 
 	^ dependenciesReport ifNil: [ self rebuildDependenciesReport ]
-
 ]
 
 { #category : #accessing }
@@ -39,7 +38,6 @@ SystemDependenciesTest class >> resetDependenciesReport [
 SystemDependenciesTest >> dependenciesReport [
 
 	^ self class dependenciesReport
-
 ]
 
 { #category : #accessing }
@@ -83,7 +81,7 @@ SystemDependenciesTest >> knownIDEDependencies [
 
 	"ideally this list should be empty"	
 	
-	^ #('Spec2-CommonWidgets' #'Calypso-SystemPlugins-Traits-Queries-Tests-PWithTraits')
+	^ #('Spec2-CommonWidgets' #'Calypso-SystemPlugins-Traits-Queries-Tests-PWithTraits' #'AI-Algorithms-Graph')
 ]
 
 { #category : #'known dependencies' }
@@ -106,7 +104,7 @@ SystemDependenciesTest >> knownMorphicCoreDependencies [
 SystemDependenciesTest >> knownMorphicDependencies [
 	"ideally this list should be empty"
 
-	^ #(#'Refactoring-Critics' #'Refactoring-Environment' #Shout #'Spec-Core' "Spec-Core should be removed later." #'Spec2-Core' #'Tool-Diff' #'Tool-FileList' #'Tool-Profilers'
+	^ #(#'Refactoring-Critics' #'Refactoring-Environment' #Shout #'Spec2-Core' #'Tool-Diff' #'Tool-FileList' #'Tool-Profilers'
 	#'Athens-Morphic' #'Tools-CodeNavigation' "Rubric has a dependency on It" 'Debugger-Oups')
 ]
 
@@ -148,14 +146,13 @@ SystemDependenciesTest >> knownUIDependencies [
 	"ideally this list should be empty"	
 
 	^ #('AST-Core-Tests'  'Athens-Cairo' 'Athens-Core' 
-	#'Athens-Morphic' #'Refactoring-Critics' #'Refactoring-Environment' 'Reflectivity-Tools' #Shout #'Tool-Diff' #'Tool-FileList' #'Tool-Profilers' #'HeuristicCompletion-Model' 'NECompletion-Morphic' #VariablesLibrary #'Tools-CodeNavigation' #'Spec2-CommonWidgets') 
+	#'Athens-Morphic' #'Refactoring-Critics' #'Refactoring-Environment' 'Reflectivity-Tools' #Shout #'Tool-Diff' #'Tool-FileList' #'Tool-Profilers' #'HeuristicCompletion-Model' 'NECompletion-Morphic' #VariablesLibrary #'Tools-CodeNavigation' #'Spec2-CommonWidgets')
 ]
 
 { #category : #utilities }
 SystemDependenciesTest >> longTestCase [
 
 	self timeLimit: 60 seconds.
-
 ]
 
 { #category : #accessing }
@@ -182,7 +179,6 @@ SystemDependenciesTest >> packagesOfGroupNamed: aGroupName on: aBaseline [
 	packages := allMembers includes select: [ :aName | allPackagesInBaseline includes: aName ].
 	groups := allMembers includes reject: [ :aName | allPackagesInBaseline includes: aName ].
 	^ packages , (groups flatCollect: [:aInnerGroupName | self packagesOfGroupNamed: aInnerGroupName on: aBaseline ]).
-
 ]
 
 { #category : #tests }
@@ -205,7 +201,6 @@ SystemDependenciesTest >> testExternalBasicToolsDependencies [
 		{ BaselineOfMorphic name }, BaselineOfMorphic allPackageNames,
 		{ BaselineOfMenuRegistration name }, BaselineOfMenuRegistration allPackageNames,
 		{ BaselineOfUI name }, BaselineOfUI allPackageNames,
-		{ BaselineOfSpec name }, BaselineOfSpec allPackageNames,
 		{ BaselineOfCommander2 name }, (BaselineOfCommander2 deepPackagesOfGroupNamed: #core),
 		{ BaselineOfCommander2 name }, (BaselineOfCommander2 deepPackagesOfGroupNamed: #ui),
 		{ BaselineOfNewValueHolder name }, (BaselineOfNewValueHolder packagesOfGroupNamed: #core),
@@ -284,7 +279,6 @@ SystemDependenciesTest >> testExternalIDEDependencies [
 	BaselineOfMorphic.
 	BaselineOfMorphicCore.
 	BaselineOfSlot.
-	BaselineOfSpec.
 	BaselineOfParametrizedTests.
 	BaselineOfSUnit.
 	BaselineOfTraits.
@@ -379,7 +373,9 @@ SystemDependenciesTest >> testExternalLocalMonticelloDependencies [
 		BaselineOfPharoBootstrap fileSystemPackageNames,
 		BaselineOfPharoBootstrap kernelAdditionalPackagesNames,
 		BaselineOfMonticello corePackageNames).
-	
+
+	self flag: 'TODO: remove next line once Zinc-Resource-Meta-Core does not depend anymore on Zinc-HTTP.'.
+	dependencies := dependencies copyWithout: #'Zinc-HTTP'.
 	self assert: dependencies isEmpty.
 ]
 
@@ -572,7 +568,6 @@ SystemDependenciesTest >> testExternalUIDependencies [
 		(BaselineOfFreeType deepPackagesOfGroupNamed: #ui),
 		BaselineOfMorphicCore allPackageNames,
 		BaselineOfMorphic allPackageNames,
-		BaselineOfSpec allPackageNames,
 		(BaselineOfCommander2 deepPackagesOfGroupNamed: #default),
 		(BaselineOfNewValueHolder packagesOfGroupNamed: #core),
 		(BaselineOfSpecCore deepPackagesOfGroupNamed: #default),

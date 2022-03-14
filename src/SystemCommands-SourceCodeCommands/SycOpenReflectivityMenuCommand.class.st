@@ -8,16 +8,9 @@ Class {
 	#category : #'SystemCommands-SourceCodeCommands'
 }
 
-{ #category : #activation }
-SycOpenReflectivityMenuCommand class >> sourceCodeMenuActivation [
-	<classAnnotation>
-	
-	^CmdContextMenuActivation byRootGroupItemOrder: 8 for: ClySourceCodeContext
-]
-
 { #category : #execution }
 SycOpenReflectivityMenuCommand >> activationStrategy [
-	^SycReflectivityMenuActivation 
+	^SycReflectivityMenuActivation
 ]
 
 { #category : #accessing }
