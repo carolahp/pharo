@@ -168,11 +168,11 @@ RBPackageEnvironment >> postCopy [
 { #category : #printing }
 RBPackageEnvironment >> printBasisObject: aClass on: aStream [
 
-	^ aStream nextPutAll: aClass name
+	^aStream nextPutAll: aClass name
 ]
 
 { #category : #printing }
-RBPackageEnvironment >> printOn: aStream [
+RBPackageEnvironment >> printOn: aStream [ 
 	aStream nextPutAll: 'Pck: '.
 	packages do: [ :pkg | aStream nextPutAll: pkg packageName, ', ']
 ]

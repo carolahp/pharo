@@ -54,6 +54,7 @@ RefactoringSettings class >> refactoringSettingsOn: aBuilder [
 				description: 'Selection new default scope for refactorings';
 				label: 'Default scope';
 				default: self scopeList first;
+				"OLD default: ClySystemEnvironmentScope;"
 				domainValues: self domainValues.
 			(aBuilder setting: #undoSize)
 				target: RBRefactoryChangeManager;
@@ -68,6 +69,8 @@ RefactoringSettings class >> removeScopeNamed: key [
 	self scopeList removeAllSuchThat: 
 		[ :e | e description = key and: 
 			[ e description ~= 'Current image'] ]
+	"Lin Old
+	^ self scopeList removeAllSuchThat: [ :e | e label = key ]"
 ]
 
 { #category : #accessing }
@@ -75,7 +78,9 @@ RefactoringSettings class >> scopeList [
 
 	^ ScopeList ifNil: 
 		[ ScopeList := OrderedCollection with: 
-			(ClyNavigationEnvironment currentImageScope asRBEnvironment label: 'current image') ]
+			(ClyNavigationEnvironment currentImageScope asRBEnvironment label: 'current image') ].
+	"Lin Old
+	^ ScopeList ifNil: [ ScopeList := Dictionary new ]"
 ]
 
 { #category : #accessing }

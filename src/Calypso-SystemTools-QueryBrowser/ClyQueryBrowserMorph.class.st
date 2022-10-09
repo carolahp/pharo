@@ -170,6 +170,7 @@ ClyQueryBrowserMorph >> expectedFlatQueryResult: anObject [
 ClyQueryBrowserMorph >> extraScopesOfSelectedItems [
 	| classScope |
 	classScope := self classScopeOfSelectedItems.
+
 	^{
 		self packageScopeOfSelectedItems. 
 		classScope asFullHierarchyScope.

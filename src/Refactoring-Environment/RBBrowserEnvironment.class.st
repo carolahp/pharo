@@ -56,8 +56,8 @@ RBBrowserEnvironment >> & anEnvironment [
 	^RBAndEnvironment onEnvironment: self and: anEnvironment
 ]
 
-{ #category : #accessing }
-RBBrowserEnvironment >> accessGuard [
+{ #category : #private }
+RBBrowserEnvironment >> accessGuard [ 
 	^ accessGuard ifNil: [ accessGuard := Mutex new ]
 ]
 
@@ -266,7 +266,7 @@ RBBrowserEnvironment >> classesDo: aBlock [
 			ifTrue: [aBlock value: each ] ]
 ]
 
-{ #category : #cleaning }
+{ #category : #private }
 RBBrowserEnvironment >> cleanGarbageInCache [
 
 	self accessGuard critical: [ self queryCache clyCleanGarbage ]
@@ -290,7 +290,6 @@ RBBrowserEnvironment >> defaultName [
 
 { #category : #accessing }
 RBBrowserEnvironment >> defaultPlugins [
-
 	^ OrderedCollection new
 ]
 
@@ -369,7 +368,7 @@ RBBrowserEnvironment >> forPragmas: aKeywordCollection [
 	^ RBPragmaEnvironment onEnvironment: self keywords: aKeywordCollection
 ]
 
-{ #category : #announcements }
+{ #category : #printing }
 RBBrowserEnvironment >> handleSystemChange: aSystemAnnouncement [
 
 	| todoList todoSize anyResult |
@@ -473,7 +472,6 @@ RBBrowserEnvironment >> isBasedOnEmptyBasis [
 
 { #category : #testing }
 RBBrowserEnvironment >> isBoundToEnvironment [
-
 	^ true
 ]
 
@@ -484,7 +482,6 @@ RBBrowserEnvironment >> isClassEnvironment [
 
 { #category : #testing }
 RBBrowserEnvironment >> isCompositeEnvironment [
-
 	^ false
 ]
 
@@ -791,7 +788,7 @@ RBBrowserEnvironment >> selectorsForClass: aClass do: aBlock [
 
 { #category : #description }
 RBBrowserEnvironment >> shortDescription [
-
+	
 	^ self description contractTo: 50
 ]
 
@@ -804,7 +801,6 @@ RBBrowserEnvironment >> storeOn: aStream [
 
 { #category : #testing }
 RBBrowserEnvironment >> supportsQuery: aQuery [
-
 	^true
 ]
 
@@ -837,13 +833,12 @@ RBBrowserEnvironment >> traitsDo: aBlock [
 			ifTrue: [ aBlock value: each ]  ]
 ]
 
-{ #category : #accessing }
+{ #category : #printing }
 RBBrowserEnvironment >> updateGuard [
-
-	^ updateGuard ifNil: [ updateGuard := Mutex new ]
+	^ updateGuard ifNil: [ updateGuard := Mutex new. ]
 ]
 
-{ #category : #actions }
+{ #category : #printing }
 RBBrowserEnvironment >> updateUsing: newUpdateStrategy by: updateBlock [
 	"here is special logic to break current mutex when any error is signalled.
 	Without this logic fixing code inside spawned debugger will lead to deadlock

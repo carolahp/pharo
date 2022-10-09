@@ -34,7 +34,7 @@ RBCategoryEnvironment class >> defaultName [
 	^ 'Categories'
 ]
 
-{ #category : #api }
+{ #category : #'instance creation' }
 RBCategoryEnvironment class >> onEnvironment: anEnvironment categories: aCollection [
 	^(self onEnvironment: anEnvironment)
 		categories: aCollection;
@@ -48,7 +48,6 @@ RBCategoryEnvironment >> addCategory: aSymbol [
 
 { #category : #accessing }
 RBCategoryEnvironment >> basisObjects [
-
 	^ self categories
 ]
 

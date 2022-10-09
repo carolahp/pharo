@@ -34,7 +34,6 @@ RBBrowserEnvironmentWrapper >> acceptVisitor: aProgramNodeVisitor [
 
 { #category : #accessing }
 RBBrowserEnvironmentWrapper >> basisObjects [
-
 	^ #()
 ]
 
@@ -97,7 +96,6 @@ RBBrowserEnvironmentWrapper >> includesSelector: aSelector in: aClass [
 
 { #category : #testing }
 RBBrowserEnvironmentWrapper >> isBoundToEnvironment [
-
 	^ environment notNil
 ]
 

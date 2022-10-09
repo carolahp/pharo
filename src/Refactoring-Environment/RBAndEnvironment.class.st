@@ -73,7 +73,7 @@ RBAndEnvironment >> includesProtocol: aProtocol in: aClass [
 { #category : #testing }
 RBAndEnvironment >> includesSelector: aSelector in: aClass [ 
 	^(environment includesSelector: aSelector in: aClass) 
-		and: [ self andedEnvironment includesSelector: aSelector in: aClass ]
+		and: [self andedEnvironment includesSelector: aSelector in: aClass]
 ]
 
 { #category : #printing }

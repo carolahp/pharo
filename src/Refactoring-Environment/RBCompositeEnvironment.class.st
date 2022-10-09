@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #accessing }
-RBCompositeEnvironment >> description [
+RBCompositeEnvironment >> description [ 
 	^ (environment descriptionUntil: 15),
 		self operator,
 		(otherEnvironment  descriptionUntil: 15)
@@ -20,16 +20,16 @@ RBCompositeEnvironment >> isCompositeEnvironment [
 ]
 
 { #category : #accessing }
-RBCompositeEnvironment >> operator [
+RBCompositeEnvironment >> operator [ 
 	self subclassResponsibility
 ]
 
 { #category : #accessing }
-RBCompositeEnvironment >> otherEnvironment [
+RBCompositeEnvironment >> otherEnvironment [ 
 	^ otherEnvironment
 ]
 
-{ #category : #accessing }
+{ #category : #description }
 RBCompositeEnvironment >> shortDescription [
-	^ self description
+	^ self description 
 ]

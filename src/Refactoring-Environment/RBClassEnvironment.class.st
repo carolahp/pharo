@@ -27,13 +27,12 @@ RBClassEnvironment class >> classes: aCollection [
 		classes: aCollection
 ]
 
-{ #category : #'accessing - defaults' }
+{ #category : #accessing }
 RBClassEnvironment class >> defaultName [
-
 	^ 'Classes'
 ]
 
-{ #category : #api }
+{ #category : #'instance creation' }
 RBClassEnvironment class >> onEnvironment: anEnvironment classes: aCollection [
 	^(self onEnvironment: anEnvironment)
 		classes: aCollection; yourself
@@ -46,6 +45,7 @@ RBClassEnvironment >> acceptVisitor: aEnvVisitor [
 
 { #category : #adding }
 RBClassEnvironment >> addClass: aClass [ 
+
 	aClass isMeta
 		ifTrue: [ metaClasses add: aClass soleInstance name ]
 		ifFalse: [ classes add: aClass name ]
@@ -71,10 +71,10 @@ RBClassEnvironment >> asSelectorEnvironment [
 
 { #category : #accessing }
 RBClassEnvironment >> basisObjects [
-	^ classes
+	^ self classes
 ]
 
-{ #category : #'accessing - classes' }
+{ #category : #'accessing-classes' }
 RBClassEnvironment >> classNames [
 	^ IdentitySet new
 		addAll: classes;
@@ -90,6 +90,11 @@ RBClassEnvironment >> classSelectorDictionary [
 			answer
 				at: class put: (self systemDictionary at: class) selectors;
 				yourself ]
+]
+
+{ #category : #'accessing-classes' }
+RBClassEnvironment >> classes [
+	^ classes
 ]
 
 { #category : #initialization }
@@ -192,12 +197,11 @@ RBClassEnvironment >> postCopy [
 { #category : #printing }
 RBClassEnvironment >> printBasisObject: aClass on: aStream [
 
-	^ aStream nextPutAll: aClass
+	^aStream nextPutAll: aClass
 ]
 
 { #category : #printing }
-RBClassEnvironment >> printOn: aStream [
-
+RBClassEnvironment >> printOn: aStream [ 
 	aStream nextPutAll: 'Cls: '.
 	classes do: [ :cls | aStream nextPutAll: cls, ', ']
 ]

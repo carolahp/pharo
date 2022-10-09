@@ -129,8 +129,7 @@ RBProtocolEnvironment >> postCopy [
 ]
 
 { #category : #printing }
-RBProtocolEnvironment >> printOn: aStream [
-
+RBProtocolEnvironment >> printOn: aStream [ 
 	aStream nextPutAll: class name, ' protocols: '.
 	protocols do: [ :cls | aStream nextPutAll: cls, ', ']
 ]
