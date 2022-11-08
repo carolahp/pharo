@@ -47,7 +47,7 @@ ThemeIcons class >> availablePacks [
 
 { #category : #accessing }
 ThemeIcons class >> baseUrl [
-	^ 'https://github.com/pharo-project/pharo-icon-packs/archive' asUrl
+	^ 'https://github.com/carolahp/pharo-icons/archive' asUrl
 ]
 
 { #category : #settings }
@@ -138,7 +138,7 @@ ThemeIcons class >> fetchPacks [
 { #category : #private }
 ThemeIcons class >> loadDefault [
 	^ self new 
-	name: 'idea11';
+	name: 'svgSPack';
 	loadIconsFromUrl;
 	yourself.
 ]
@@ -163,7 +163,7 @@ ThemeIcons class >> settingsOn: aBuilder [
 		parent: #appearance;
 		order: 2;
 		label: 'Icon Set';
-		default: (ThemeIcons named: 'idea11');
+		default: (ThemeIcons named: 'svgSPack');
 		target: self;
 		dialog: [ self createSettingRow ]
 ]
@@ -320,18 +320,31 @@ ThemeIcons >> isReportingNotFound [
 
 { #category : #loading }
 ThemeIcons >> loadIconsFromUrl [
+
 	| newIcons zipArchive |
-	
 	newIcons := IdentityDictionary new.
 	zipArchive := self downloadFromUrl.
-	((FileSystem zip: zipArchive) open workingDirectory allChildrenMatching: '*.png')
-		reject: [ :each | each base beginsWith: '.' ]
-		thenDo: [ :each | 
-			[ newIcons 	
-				at: each base asSymbol
-				put: (self readPNGFrom: each) ]
-			on: Error do: [ :e | self crTrace: each fullName, ' not a PNG, skipping.'  ]].
-	icons := newIcons.
+
+	((FileSystem zip: zipArchive) open workingDirectory children anyOne
+		 childrenMatching: '*scale*') sort do: [ :folder | 
+		| scale folderName |
+		folderName := folder basename.
+		scale := (folderName
+			          copyFrom: folderName size - 2
+			          to: folderName size) asNumber.
+		(folder allChildrenMatching: '*.png')
+			reject: [ :each | each base beginsWith: '.' ]
+			thenDo: [ :each | 
+				| form iconName |
+				[ 
+				form := self readPNGFrom: each.
+				iconName := each base asSymbol.
+				newIcons at: iconName ifAbsentPut: [ Icon new ].
+				(newIcons at: iconName) at: scale put: form
+				]
+					on: Error
+					do: [ :e | self crTrace: each fullName , ' not a PNG, skipping.' ] ] ].
+	icons := newIcons
 ]
 
 { #category : #accessing }

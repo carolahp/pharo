@@ -17,6 +17,11 @@ Icon >> asForm [
 ]
 
 { #category : #accessing }
+Icon >> at: aScale put: aForm [
+	forms at: aScale asFloat put: aForm
+]
+
+{ #category : #accessing }
 Icon >> boundingBox [
 	
 	^ self resolveForm boundingBox 
@@ -28,13 +33,22 @@ Icon >> depth [
 ]
 
 { #category : #accessing }
+Icon >> doesNotUnderstand: aMessage [
+	| form |
+	form := self resolveForm.
+	^ ( form respondsTo: aMessage selector)
+		ifTrue: [ form perform: aMessage selector withEnoughArguments: aMessage arguments ]
+		ifFalse: [ super doesNotUnderstand: aMessage ]
+]
+
+{ #category : #accessing }
 Icon >> extent [
 	^ self resolveForm extent
 ]
 
 { #category : #accessing }
-Icon >> forms: aCollection [ 
-	forms := aCollection
+Icon >> forms: aDictionary [ 
+	forms := aDictionary
 ]
 
 { #category : #accessing }
@@ -48,6 +62,12 @@ Icon >> hibernate [
 	^ self resolveForm hibernate
 ]
 
+{ #category : #initialization }
+Icon >> initialize [
+	super initialize.
+	forms := IdentityDictionary new
+]
+
 { #category : #testing }
 Icon >> isTranslucent [
 	^ self resolveForm isTranslucent 
@@ -56,7 +76,9 @@ Icon >> isTranslucent [
 { #category : #accessing }
 Icon >> resolveForm [
 
-	^ self resolveFormForScaleFactor: 1.0
+	| scale |
+	scale := WorldMorph scaleFactor.
+	^ self resolveFormForScaleFactor: scale
 ]
 
 { #category : #accessing }
@@ -65,6 +87,11 @@ Icon >> resolveFormForScaleFactor: aScaleFactor [
 	^ forms
 		  at: aScaleFactor asFloat
 		  ifAbsent: [ (forms at: 1 asFloat) scaledByWorldScaleFactor ]
+]
+
+{ #category : #accessing }
+Icon >> scaledByWorldScaleFactor [
+	^ self resolveForm
 ]
 
 { #category : #accessing }
