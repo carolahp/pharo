@@ -331,19 +331,28 @@ ThemeIcons >> isReportingNotFound [
 
 { #category : #loading }
 ThemeIcons >> loadIconsFromUrl [
+
 	| newIcons zipArchive |
-	
 	newIcons := IdentityDictionary new.
 	zipArchive := self downloadFromUrl.
+	{ 1.0. 1.5. 2.0 } do: [ :scale | 
+		(((FileSystem zip: zipArchive) open workingDirectory 
+			  allChildrenMatching: '*scale' , scale asString) anyOne 
+			 allChildrenMatching: '*.png')
+			reject: [ :each | each base beginsWith: '.' ]
+			thenDo: [ :each | 
+				[ 
+				| form |
+				newIcons at: each base asSymbol ifAbsentPut: [ 
+					Icon new
+						forms: Dictionary new;
+						yourself ].
 
-	(((FileSystem zip: zipArchive) open workingDirectory allChildrenMatching: '*scale1.0' ) anyOne
-	allChildrenMatching: '*.png')
-		reject: [ :each | each base beginsWith: '.' ]
-		thenDo: [ :each |
-			[ newIcons 	
-				at: each base asSymbol
-				put: (self readPNGFrom: each) ]
-			on: Error do: [ :e | self crTrace: each fullName, ' not a PNG, skipping.'  ]].
+				form := self readPNGFrom: each.
+				(newIcons at: each base asSymbol) at: scale asFloat put: form ]
+					on: Error
+					do: [ :e | self crTrace: each fullName , ' not a PNG, skipping.' ] ] ].
+
 	icons := newIcons
 ]
 
