@@ -80,6 +80,11 @@ AthensCairoCanvas >> destroy [
 	^ self ffiCall: #( 	void cairo_destroy (self) )
 ]
 
+{ #category : #private }
+AthensCairoCanvas >> doPrimRestoreState [
+	^ self ffiCall: #(void cairo_restore (self))
+]
+
 { #category : #drawing }
 AthensCairoCanvas >> draw [
 	"Fill the shape (anObject) using currently selected paint
@@ -232,7 +237,8 @@ AthensCairoCanvas >> primResetDashes: anOffset [
 
 { #category : #private }
 AthensCairoCanvas >> primRestoreState [
-	^ self ffiCall: #(void cairo_restore (self))
+	handle isNull ifTrue: [ ^ self ].
+	^ self doPrimRestoreState 
 ]
 
 { #category : #private }
