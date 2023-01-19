@@ -336,6 +336,7 @@ ThemeIcons >> loadIconsFromUrl [
 	newIcons := IdentityDictionary new.
 	zipArchive := self downloadFromUrl.
 	{ 1.0. 1.5. 2.0 } do: [ :scale | 
+		self halt.
 		(((FileSystem zip: zipArchive) open workingDirectory 
 			  allChildrenMatching: '*scale' , scale asString) anyOne 
 			 allChildrenMatching: '*.png')
@@ -343,16 +344,24 @@ ThemeIcons >> loadIconsFromUrl [
 			thenDo: [ :each | 
 				[ 
 				| form |
-				newIcons at: each base asSymbol ifAbsentPut: [ 
-					Icon new
-						forms: Dictionary new;
-						yourself ].
-
 				form := self readPNGFrom: each.
-				(newIcons at: each base asSymbol) at: scale asFloat put: form ]
+
+				newIcons
+					at: each base asSymbol
+					ifPresent: [ :icon | icon at: scale asFloat put: form ]
+					ifAbsentPut: [ form asIcon ] ]
 					on: Error
 					do: [ :e | self crTrace: each fullName , ' not a PNG, skipping.' ] ] ].
 
+	"(((FileSystem zip: zipArchive) open workingDirectory allChildrenMatching: '*scale1.0' ) anyOne
+	allChildrenMatching: '*.png')
+		reject: [ :each | each base beginsWith: '.' ]
+		thenDo: [ :each |
+			[ newIcons 	
+				at: each base asSymbol
+				put: (self readPNGFrom: each) ]
+			on: Error do: [ :e | self crTrace: each fullName, ' not a PNG, skipping.'  ]].
+"
 	icons := newIcons
 ]
 

@@ -1,6 +1,12 @@
 Extension { #name : #Form }
 
 { #category : #'*Polymorph-Widgets' }
+Form >> asIcon [
+
+	^ (Icon extent: width @ height depth: depth bits: bits) initialize
+]
+
+{ #category : #'*Polymorph-Widgets' }
 Form >> listRenderOn: aCanvas atRow: index bounds: aRectangle color: aColor backgroundColor: backgroundColor from: aList [
 	self asMorph
 		listRenderOn: aCanvas
