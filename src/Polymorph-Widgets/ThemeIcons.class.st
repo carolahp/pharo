@@ -336,7 +336,6 @@ ThemeIcons >> loadIconsFromUrl [
 	newIcons := IdentityDictionary new.
 	zipArchive := self downloadFromUrl.
 	{ 1.0. 1.5. 2.0 } do: [ :scale | 
-		self halt.
 		(((FileSystem zip: zipArchive) open workingDirectory 
 			  allChildrenMatching: '*scale' , scale asString) anyOne 
 			 allChildrenMatching: '*.png')
@@ -360,8 +359,8 @@ ThemeIcons >> loadIconsFromUrl [
 			[ newIcons 	
 				at: each base asSymbol
 				put: (self readPNGFrom: each) ]
-			on: Error do: [ :e | self crTrace: each fullName, ' not a PNG, skipping.'  ]].
-"
+			on: Error do: [ :e | self crTrace: each fullName, ' not a PNG, skipping.'  ]]."
+
 	icons := newIcons
 ]
 
