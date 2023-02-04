@@ -10,6 +10,11 @@ Class {
 	#category : #'Polymorph-Widgets-Themes'
 }
 
+{ #category : #converting }
+Icon >> asIcon [
+	^ self
+]
+
 { #category : #accessing }
 Icon >> at: aSymbol put: aForm [
 	^ forms at: aSymbol put: aForm

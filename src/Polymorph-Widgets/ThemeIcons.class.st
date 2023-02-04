@@ -301,7 +301,7 @@ ThemeIcons >> iconNamed: aSymbol [
 				ifTrue: [ 
 					self crTrace: (aSymbol, ' icon not found!').
 					self notFoundIcon ]
-				ifFalse: [ self blankIcon ]]) scaledByDisplayScaleFactor
+				ifFalse: [ self blankIcon ]])
 ]
 
 { #category : #accessing }
