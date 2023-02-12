@@ -68,6 +68,7 @@ RBComment >> acceptVisitor: aProgramNodeVisitor [
 
 { #category : #accessing }
 RBComment >> contents [
+	"a test comment"
 	^ contents
 ]
 
