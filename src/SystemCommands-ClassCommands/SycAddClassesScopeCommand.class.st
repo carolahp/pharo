@@ -21,7 +21,8 @@ SycAddClassesScopeCommand >> defaultMenuItemName [
 SycAddClassesScopeCommand >> execute [
 	| scope |
 	scope := RBBrowserEnvironment new forClasses: classes.
-	RefactoringSettings addScope: scope
+	RefactoringSettings addScope: scope.
+	ScopesPresenter openSelecting: scope
 ]
 
 { #category : #execution }

@@ -2,18 +2,18 @@
 I'm a visitor to create the correct presenter to edit a scope
 "
 Class {
-	#name : #RBEnvironmentVisitor,
+	#name : #ScopeVisitor,
 	#superclass : #Object,
 	#category : #'SystemCommands-RefactoringSupport-Scope'
 }
 
 { #category : #accessing }
-RBEnvironmentVisitor >> chooserClass [
+ScopeVisitor >> chooserClass [
 	^ SpChooserPresenter
 ]
 
 { #category : #visiting }
-RBEnvironmentVisitor >> visitClassEnv: rbClassEnv [
+ScopeVisitor >> visitClassEnv: rbClassEnv [
 	| list selectedList methodName items dialog |
 	list := RBBrowserEnvironment default allClasses sorted: #name ascending.
 	selectedList := (rbClassEnv classes collect:
@@ -29,7 +29,7 @@ RBEnvironmentVisitor >> visitClassEnv: rbClassEnv [
 ]
 
 { #category : #visiting }
-RBEnvironmentVisitor >> visitPackageEnv: rbPackageEnv [
+ScopeVisitor >> visitPackageEnv: rbPackageEnv [
 	| list selectedList methodName items dialog |
 	list := RPackageOrganizer default packages sorted: #packageName ascending.
 	selectedList := rbPackageEnv packages asArray sorted: #packageName ascending.
@@ -45,7 +45,7 @@ RBEnvironmentVisitor >> visitPackageEnv: rbPackageEnv [
 ]
 
 { #category : #visiting }
-RBEnvironmentVisitor >> visitProtocolEnv: rbProtocolEnv [
+ScopeVisitor >> visitProtocolEnv: rbProtocolEnv [
 	| list selectedList methodName items dialog |
 	list := rbProtocolEnv definedClass protocols sorted.
 	selectedList := rbProtocolEnv protocols sorted.

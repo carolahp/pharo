@@ -2,7 +2,7 @@
 A Presenter to manipulate Scopes
 "
 Class {
-	#name : #RBEnvironmentsPresenter,
+	#name : #ScopesPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'scopeList'
@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #layout }
-RBEnvironmentsPresenter class >> defaultLayout [
+ScopesPresenter class >> defaultLayout [
 	^ SpBoxLayout newTopToBottom
 		add:
 			(SpBoxLayout newLeftToRight
@@ -24,7 +24,7 @@ RBEnvironmentsPresenter class >> defaultLayout [
 ]
 
 { #category : #specs }
-RBEnvironmentsPresenter class >> menuCommandOn: aBuilder [
+ScopesPresenter class >> menuCommandOn: aBuilder [
     <worldMenu>
     (aBuilder item: #'Scopes Editor')
                 action: [self open];
@@ -34,7 +34,7 @@ RBEnvironmentsPresenter class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #specs }
-RBEnvironmentsPresenter class >> open [
+ScopesPresenter class >> open [
 
 	<script>
 	(self singleInstance
@@ -43,30 +43,30 @@ RBEnvironmentsPresenter class >> open [
 ]
 
 { #category : #specs }
-RBEnvironmentsPresenter class >> openSelecting: aScope [
+ScopesPresenter class >> openSelecting: aScope [
 	
 	self open.
 	self singleInstance selectScope: aScope
 ]
 
 { #category : #specs }
-RBEnvironmentsPresenter class >> singleInstance [
+ScopesPresenter class >> singleInstance [
 
 	^ SingleInstance ifNil: [ SingleInstance := self new ]
 ]
 
-{ #category : #accessing }
-RBEnvironmentsPresenter class >> title [
+{ #category : #specs }
+ScopesPresenter class >> title [
 	^ 'Scope options'
 ]
 
 { #category : #accessing }
-RBEnvironmentsPresenter >> andWithScope: anItem [
+ScopesPresenter >> andWithScope: anItem [
 	self performOperation: #& with: anItem
 ]
 
 { #category : #accessing }
-RBEnvironmentsPresenter >> argumentsListMenu [
+ScopesPresenter >> argumentsListMenu [
 	^ self newMenu
 		addGroup: [ :aGroup |
 			aGroup
@@ -103,14 +103,14 @@ RBEnvironmentsPresenter >> argumentsListMenu [
 ]
 
 { #category : #actions }
-RBEnvironmentsPresenter >> edit: anItem [
-	[ anItem acceptVisitor: RBEnvironmentVisitor new ]
+ScopesPresenter >> edit: anItem [
+	[ anItem acceptVisitor: ScopeVisitor new ]
 	on: Error
 	do: [ :e | self inform:  'Somethig was wrong']
 ]
 
-{ #category : #initialization }
-RBEnvironmentsPresenter >> initializePresenter [
+{ #category : #'initialization - deprecated' }
+ScopesPresenter >> initializePresenter [
 
 	scopeList addColumn: (SpStringTableColumn title: 'Environment' evaluated: #shortDescription);
 		roots: RefactoringSettings scopeList;
@@ -121,19 +121,19 @@ RBEnvironmentsPresenter >> initializePresenter [
 		contextMenu: self argumentsListMenu
 ]
 
-{ #category : #initialization }
-RBEnvironmentsPresenter >> initializeWidgets [
+{ #category : #'initialization - deprecated' }
+ScopesPresenter >> initializeWidgets [
 	scopeList := self newTreeTable
 ]
 
 { #category : #actions }
-RBEnvironmentsPresenter >> inspect: anItem [
+ScopesPresenter >> inspect: anItem [
 
 	(anItem inspectIn: self) open title: anItem shortDescription
 ]
 
 { #category : #actions }
-RBEnvironmentsPresenter >> notWithScope: anItem [
+ScopesPresenter >> notWithScope: anItem [
 
 	[ | newScope |
 	newScope := anItem not.
@@ -147,12 +147,12 @@ RBEnvironmentsPresenter >> notWithScope: anItem [
 ]
 
 { #category : #actions }
-RBEnvironmentsPresenter >> orWithScope: anItem [
+ScopesPresenter >> orWithScope: anItem [
 	self performOperation: #| with: anItem
 ]
 
 { #category : #actions }
-RBEnvironmentsPresenter >> performOperation: aSymbol with: anItem [
+ScopesPresenter >> performOperation: aSymbol with: anItem [
 	| anEnvironment newScope |
 	[ anEnvironment := self selectAnotherScopeWhitout: anItem.
 	newScope := anItem perform: aSymbol with: anEnvironment.
@@ -167,13 +167,13 @@ RBEnvironmentsPresenter >> performOperation: aSymbol with: anItem [
 ]
 
 { #category : #actions }
-RBEnvironmentsPresenter >> remove: anItem [
+ScopesPresenter >> remove: anItem [
 	RefactoringSettings removeScopeNamed: anItem description.
 	self updateList
 ]
 
 { #category : #actions }
-RBEnvironmentsPresenter >> selectAnotherScopeWhitout: anItem [
+ScopesPresenter >> selectAnotherScopeWhitout: anItem [
 	| anotherScope list |
 	list := RefactoringSettings scopeList copyWithout: anItem.
 	anotherScope := UIManager default
@@ -184,11 +184,11 @@ RBEnvironmentsPresenter >> selectAnotherScopeWhitout: anItem [
 ]
 
 { #category : #'api-selection' }
-RBEnvironmentsPresenter >> selectScope: aRBClassEnvironment [ 
+ScopesPresenter >> selectScope: aRBClassEnvironment [ 
 	scopeList selectItem: aRBClassEnvironment
 ]
 
 { #category : #actions }
-RBEnvironmentsPresenter >> updateList [
+ScopesPresenter >> updateList [
 	scopeList roots: RefactoringSettings scopeList
 ]

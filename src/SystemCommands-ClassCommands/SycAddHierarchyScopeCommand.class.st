@@ -21,5 +21,6 @@ SycAddHierarchyScopeCommand >> defaultMenuItemName [
 SycAddHierarchyScopeCommand >> execute [
 	| scope |
 	scope :=  RBBrowserEnvironment new forClassHierarchy: targetClass.
-	RefactoringSettings addScope: scope
+	RefactoringSettings addScope: scope.
+	ScopesPresenter openSelecting: scope
 ]

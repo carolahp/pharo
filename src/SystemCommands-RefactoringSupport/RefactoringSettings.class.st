@@ -75,7 +75,7 @@ RefactoringSettings class >> scopeList [
 
 	^ ScopeList ifNil:
 		[ ScopeList := OrderedCollection with:
-			(ClyNavigationEnvironment currentImageScope asRBEnvironment label: 'current image') ]
+			(ClyNavigationEnvironment currentImageScope asRBEnvironment label: 'Image') ]
 ]
 
 { #category : #accessing }

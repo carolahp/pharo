@@ -24,7 +24,8 @@ SycAddPackagesScopeCommand >> defaultMenuItemName [
 SycAddPackagesScopeCommand >> execute [
 	| scope |
 	scope := RBBrowserEnvironment new forPackages: packages.
-	RefactoringSettings addScope: scope
+	RefactoringSettings addScope: scope.
+	ScopesPresenter openSelecting: scope
 ]
 
 { #category : #accessing }
