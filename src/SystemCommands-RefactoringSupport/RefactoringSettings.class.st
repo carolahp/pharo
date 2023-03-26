@@ -1,9 +1,12 @@
+"
+I define the scope and the way refactorings are applied
+"
 Class {
 	#name : #RefactoringSettings,
 	#superclass : #Object,
 	#classVars : [
-		'ScopeList',
-		'ScopeRefactoring'
+		'CurrentScope',
+		'ScopeList'
 	],
 	#category : #'SystemCommands-RefactoringSupport-Scope'
 }
@@ -23,6 +26,26 @@ RefactoringSettings class >> addScope: aScope withKey: key [
 RefactoringSettings class >> availableScopes [
 	"We don't return the Current image scope"
 	^ self scopeList allButFirst
+]
+
+{ #category : #accessing }
+RefactoringSettings class >> currentScope [
+
+	^ CurrentScope ifNil: [ CurrentScope := self defaultScope ]
+]
+
+{ #category : #accessing }
+RefactoringSettings class >> currentScope: aRBBrowserEnvironment [
+
+	CurrentScope := aRBBrowserEnvironment
+]
+
+{ #category : #default }
+RefactoringSettings class >> defaultScope [
+
+	^ (self scopeList select: [ :scope | scope isSystem ])
+		  at: 1
+		  ifAbsent: [ self error: 'Root Scope (containing full image contents) is not defined' ]
 ]
 
 { #category : #accessing }
@@ -48,12 +71,12 @@ RefactoringSettings class >> refactoringSettingsOn: aBuilder [
 			'All refactoring related settings';
 		noOrdering;
 		with: [
-			(aBuilder pickOne: #scopeRefactoring)
+			(aBuilder pickOne: #currentScope)
 				order: 0;
 				target: self;
-				description: 'Selection new default scope for refactorings';
+				description: 'The default scope on which refactorings are applied';
 				label: 'Default scope';
-				default: self scopeList first;
+				default: self defaultScope;
 				domainValues: self domainValues.
 			(aBuilder setting: #undoSize)
 				target: RBRefactoryChangeManager;
@@ -82,18 +105,6 @@ RefactoringSettings class >> scopeList [
 RefactoringSettings class >> scopeList: anObject [
 
 	ScopeList := anObject
-]
-
-{ #category : #accessing }
-RefactoringSettings class >> scopeRefactoring [
-
-	^ ScopeRefactoring ifNil: [ ScopeRefactoring := self scopeList first ]
-]
-
-{ #category : #accessing }
-RefactoringSettings class >> scopeRefactoring: anObject [
-
-	ScopeRefactoring := anObject
 ]
 
 { #category : #setting }

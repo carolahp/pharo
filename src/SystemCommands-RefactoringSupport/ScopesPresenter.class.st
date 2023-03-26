@@ -49,6 +49,12 @@ ScopesPresenter class >> openSelecting: aScope [
 	self singleInstance selectScope: aScope
 ]
 
+{ #category : #'class initialization' }
+ScopesPresenter class >> reset [
+
+	SingleInstance := nil
+]
+
 { #category : #specs }
 ScopesPresenter class >> singleInstance [
 
@@ -103,6 +109,11 @@ ScopesPresenter >> argumentsListMenu [
 ]
 
 { #category : #actions }
+ScopesPresenter >> changeCurrentScope: aRBEnvironment [ 
+	RefactoringSettings currentScope: aRBEnvironment
+]
+
+{ #category : #actions }
 ScopesPresenter >> edit: anItem [
 	[ anItem acceptVisitor: ScopeVisitor new ]
 	on: Error
@@ -112,12 +123,25 @@ ScopesPresenter >> edit: anItem [
 { #category : #'initialization - deprecated' }
 ScopesPresenter >> initializePresenter [
 
-	scopeList addColumn: (SpStringTableColumn title: 'Environment' evaluated: #shortDescription);
+	| currentScopeColumn |
+	currentScopeColumn := SpCheckBoxTableColumn
+		                      title: 'Current Scope for Refactorings'
+		                      evaluated: [ :item |
+		                      RefactoringSettings currentScope == item ].
+	currentScopeColumn onActivation: [ :item |
+		self changeCurrentScope: item.
+		self updateList ].
+	scopeList
+		addColumn:
+			(SpStringTableColumn title: 'Scope' evaluated: #shortDescription);
+		addColumn: currentScopeColumn;
 		roots: RefactoringSettings scopeList;
-		children: [ :aClass | RefactoringSettings scopeList
-			select: [ :cls | aClass isCompositeEnvironment ifTrue:
-				[ aClass environment == cls or: [ aClass otherEnvironment == cls ] ]
-			ifFalse: [ false ] ] ];
+		children: [ :aClass |
+			RefactoringSettings scopeList select: [ :cls |
+					aClass isCompositeEnvironment
+						ifTrue: [
+							aClass environment == cls or: [ aClass otherEnvironment == cls ] ]
+						ifFalse: [ false ] ] ];
 		contextMenu: self argumentsListMenu
 ]
 
