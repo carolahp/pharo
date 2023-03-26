@@ -1,8 +1,14 @@
+"
+A Presenter to manipulate Scopes
+"
 Class {
 	#name : #RBEnvironmentsPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'scopeList'
+	],
+	#classVars : [
+		'SingleInstance'
 	],
 	#category : #'SystemCommands-RefactoringSupport-Scope'
 }
@@ -29,8 +35,24 @@ RBEnvironmentsPresenter class >> menuCommandOn: aBuilder [
 
 { #category : #specs }
 RBEnvironmentsPresenter class >> open [
+
 	<script>
-	self new open
+	(self singleInstance
+		 updateList; 
+		 yourself) isDisplayed ifFalse: [ self singleInstance open ]
+]
+
+{ #category : #specs }
+RBEnvironmentsPresenter class >> openSelecting: aScope [
+	
+	self open.
+	self singleInstance selectScope: aScope
+]
+
+{ #category : #specs }
+RBEnvironmentsPresenter class >> singleInstance [
+
+	^ SingleInstance ifNil: [ SingleInstance := self new ]
 ]
 
 { #category : #accessing }
@@ -159,6 +181,11 @@ RBEnvironmentsPresenter >> selectAnotherScopeWhitout: anItem [
 			values: list
 			title: 'Select another scope (RBEnvironment)'.
 	^ anotherScope
+]
+
+{ #category : #'api-selection' }
+RBEnvironmentsPresenter >> selectScope: aRBClassEnvironment [ 
+	scopeList selectItem: aRBClassEnvironment
 ]
 
 { #category : #actions }
