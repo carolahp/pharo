@@ -7,16 +7,6 @@ Class {
 	#category : #'SystemCommands-RefactoringSupport-Scope'
 }
 
-{ #category : #layout }
-RBEnvironmentsPresenter class >> defaultLayout [
-	^ SpBoxLayout newTopToBottom
-		add:
-			(SpBoxLayout newLeftToRight
-				add: #scopeList;
-				yourself);
-		yourself
-]
-
 { #category : #specs }
 RBEnvironmentsPresenter class >> menuCommandOn: aBuilder [
     <worldMenu>
@@ -80,6 +70,17 @@ RBEnvironmentsPresenter >> argumentsListMenu [
 				 ]
 ]
 
+{ #category : #initialization }
+RBEnvironmentsPresenter >> defaultLayout [
+	^ SpBoxLayout newTopToBottom
+		add: self mainMenu;
+		add:
+			(SpBoxLayout newLeftToRight
+				add: #scopeList;
+				yourself);
+		yourself
+]
+
 { #category : #actions }
 RBEnvironmentsPresenter >> edit: anItem [
 	[ anItem acceptVisitor: RBEnvironmentVisitor new ]
@@ -90,12 +91,13 @@ RBEnvironmentsPresenter >> edit: anItem [
 { #category : #initialization }
 RBEnvironmentsPresenter >> initializePresenter [
 
-	scopeList addColumn: (SpStringTableColumn title: 'Environment' evaluated: #shortDescription);
+	scopeList addColumn: (SpStringTableColumn title: 'Scope' evaluated: #shortDescription);
 		roots: RefactoringSettings scopeList;
 		children: [ :aClass | RefactoringSettings scopeList
 			select: [ :cls | aClass isCompositeEnvironment ifTrue:
 				[ aClass environment == cls or: [ aClass otherEnvironment == cls ] ]
 			ifFalse: [ false ] ] ];
+		selectItem: (scopeList itemAtPath: #(1));
 		contextMenu: self argumentsListMenu
 ]
 
@@ -108,6 +110,21 @@ RBEnvironmentsPresenter >> initializeWidgets [
 RBEnvironmentsPresenter >> inspect: anItem [
 
 	(anItem inspectIn: self) open title: anItem shortDescription
+]
+
+{ #category : #initialization }
+RBEnvironmentsPresenter >> mainMenu [ 
+	| menu |
+	menu := self newMenuBar
+		addGroup: [ :group | 
+			group
+				addItem: [ :item | 
+					item
+						name: nil; 
+						description: 'Add menu item';
+						icon: (self iconNamed: #add);
+						action: [ self addItemTo: group ] ] ].
+	^ menu
 ]
 
 { #category : #actions }
