@@ -12,6 +12,14 @@ Class {
 	#package : 'Refactoring-Environment'
 }
 
+{ #category : 'accessing' }
+RBNotEnvironment >> basisObjects [
+	| classes |
+	classes := #() asOrderedCollection .
+	self classesDo: [ :class | class isMeta ifFalse: [classes add: class] ].
+	^ classes
+]
+
 { #category : 'testing' }
 RBNotEnvironment >> definesClass: aClass [
 	^ (environment definesClass: aClass) not

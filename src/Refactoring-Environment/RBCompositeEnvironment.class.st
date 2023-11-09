@@ -8,16 +8,22 @@ Class {
 	#package : 'Refactoring-Environment'
 }
 
-{ #category : 'accessing' }
+{ #category : 'description' }
 RBCompositeEnvironment >> description [
-	^ (environment descriptionUntil: 15),
-		self operator,
-		(otherEnvironment  descriptionUntil: 15)
+	^ label
 ]
 
 { #category : 'testing' }
 RBCompositeEnvironment >> isCompositeEnvironment [
 	^ true
+]
+
+{ #category : 'testing' }
+RBCompositeEnvironment >> isTerminal [
+	"A terminal composite environment does not contain composite environments"
+
+	^ self environment isCompositeEnvironment not and: [
+		  self otherEnvironment isCompositeEnvironment not ]
 ]
 
 { #category : 'accessing' }
@@ -28,6 +34,11 @@ RBCompositeEnvironment >> operator [
 { #category : 'accessing' }
 RBCompositeEnvironment >> otherEnvironment [
 	^ otherEnvironment
+]
+
+{ #category : 'printing' }
+RBCompositeEnvironment >> printOn: aStream [
+	aStream nextPutAll: label
 ]
 
 { #category : 'accessing' }

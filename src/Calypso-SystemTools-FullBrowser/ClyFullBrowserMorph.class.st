@@ -168,11 +168,10 @@ ClyFullBrowserMorph >> allNavigationScopes [
 
 	| classLocalScope |
 	classLocalScope := self classSelection asItemsScope: ClyBothMetaLevelClassScope.
-
 	^super allNavigationScopes, {
 		self packageSelection asItemsScope: ClyPackageScope.
 		classLocalScope asFullHierarchyScope.
-		classLocalScope }, RefactoringSettings availableScopes
+		classLocalScope }, ScopesManager availableScopes
 ]
 
 { #category : 'updating' }
@@ -311,9 +310,10 @@ ClyFullBrowserMorph >> defaultClassScopeForMethods [
 { #category : 'navigation' }
 ClyFullBrowserMorph >> defaultNavigationScope [
 
-	^self isScopedModeEnabled
-		ifFalse: [ super defaultNavigationScope ]
-		ifTrue: [ packageView query scope]
+	ScopesManager currentQueryScope ifNotNil: [ :scope | ^ scope ].
+	^ self isScopedModeEnabled
+		  ifFalse: [ super defaultNavigationScope ]
+		  ifTrue: [ packageView query scope ]
 ]
 
 { #category : 'accessing' }

@@ -53,15 +53,15 @@ RBBrowserEnvironmentWrapper >> description [
 { #category : 'description' }
 RBBrowserEnvironmentWrapper >> descriptionBasis [
 
-	| basis |
- 	basis := self basisObjects.
- 	basis ifEmpty: [ ^ '' ].
- 	^ String streamContents: [ :s |
- 		  s nextPutAll: ': '.
- 		  basis do: [ :each |
- 			  self printBasisObject: each on: s.
- 			  s nextPutAll: ', ' ].
- 		  s skip: -2 ]
+	| basis size |
+	basis := self basisObjects.
+	basis ifEmpty: [ ^ '' ].
+	^ String streamContents: [ :s |
+		  s nextPutAll: ': '.
+		  size := basis size.
+		  basis doWithIndex: [ :each :index |
+			  self printBasisObject: each on: s.
+			  index = size ifFalse: [ s nextPutAll: ', ' ] ] ]
 ]
 
 { #category : 'private' }
@@ -96,6 +96,11 @@ RBBrowserEnvironmentWrapper >> includesSelector: aSelector in: aClass [
 RBBrowserEnvironmentWrapper >> isBoundToEnvironment [
 
 	^ environment notNil
+]
+
+{ #category : 'testing' }
+RBBrowserEnvironmentWrapper >> isCurrentImage [
+	^ false
 ]
 
 { #category : 'testing' }

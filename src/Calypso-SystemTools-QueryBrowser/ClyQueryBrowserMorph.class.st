@@ -176,7 +176,7 @@ ClyQueryBrowserMorph >> extraScopesOfSelectedItems [
 		self packageScopeOfSelectedItems.
 		classScope asFullHierarchyScope.
 		classScope
-	}, RefactoringSettings availableScopes
+	}, ScopesManager availableScopes
 ]
 
 { #category : 'initialization' }
@@ -452,7 +452,7 @@ ClyQueryBrowserMorph >> switchResultTo: aQueryResult [
 
 { #category : 'navigation' }
 ClyQueryBrowserMorph >> switchScopeTo: aScope [
-
+	ScopesManager currentQueryScope: aScope.
 	self changeStateBy: [
 		systemQuery := systemQuery withScope: aScope.
 		self showQueryResult]

@@ -476,6 +476,11 @@ RBBrowserEnvironment >> isEmpty [
 ]
 
 { #category : 'testing' }
+RBBrowserEnvironment >> isPackageEnvironment [
+	^ false
+]
+
+{ #category : 'testing' }
 RBBrowserEnvironment >> isSelectorEnvironment [
 	^ false
 ]

@@ -66,8 +66,9 @@ RBPackageEnvironment >> acceptVisitor: aEnvVisitor [
 ]
 
 { #category : 'adding' }
-RBPackageEnvironment >> addPackage: aSymbol [
-	packages add: aSymbol
+RBPackageEnvironment >> addPackage: aPackage [
+
+	packages add: aPackage
 ]
 
 { #category : 'accessing' }
@@ -143,6 +144,11 @@ RBPackageEnvironment >> initialize [
 	packages := Set new
 ]
 
+{ #category : 'testing' }
+RBPackageEnvironment >> isPackageEnvironment [
+	^ true
+]
+
 { #category : 'accessing' }
 RBPackageEnvironment >> packageNames [
 
@@ -173,8 +179,12 @@ RBPackageEnvironment >> printBasisObject: aClass on: aStream [
 
 { #category : 'printing' }
 RBPackageEnvironment >> printOn: aStream [
+
 	aStream nextPutAll: 'Pck: '.
-	packages do: [ :pkg | aStream nextPutAll: pkg packageName, ', ']
+	packages do: [ :pkg |
+		aStream
+			nextPutAll: pkg name;
+			nextPutAll: ', ' ]
 ]
 
 { #category : 'removing' }
