@@ -1560,7 +1560,7 @@ SequenceableCollection >> lastIndexOf: anElement startingAt: lastIndex ifAbsent:
 
 	lastIndex to: 1 by: -1 do:
 		[:index |
-		(self at: index) = anElement ifTrue: [^ index]].
+		((self at: index) sameContents: anElement) ifTrue: [^ index]].
 	^ exceptionBlock value
 ]
 
