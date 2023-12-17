@@ -102,7 +102,7 @@ RGBehavior >> organization [
 { #category : #'*Calypso-Ring' }
 RGBehavior >> protocolNamed: aString [
 
-	^ self protocols detect: [ :each | each name = aString ]
+	^ self protocols detect: [ :each | each name sameContents: aString ]
 ]
 
 { #category : #'*Calypso-Ring' }

@@ -143,7 +143,7 @@ ProtocolOrganizer >> protocolNamed: aName [
 { #category : #accessing }
 ProtocolOrganizer >> protocolNamed: aString ifAbsent: aBlock [
 	^  self allProtocols
-		detect: [ :e | e name = aString ]
+		detect: [ :e | e name sameContents: aString ]
 		ifNone: aBlock
 ]
 
