@@ -354,6 +354,7 @@ Symbol >> , otherSymbolOrString [
 { #category : #comparing }
 Symbol >> = aSymbol [
 	"Compare the receiver and aSymbol."
+	Symbol strictComparison ifTrue: [ ^ self == aSymbol ].
 	self == aSymbol ifTrue: [^ true].
 	self class == aSymbol class ifTrue: [^ false].
 	"Use String comparison otherwise"
